@@ -8,7 +8,7 @@
   </parent>
   <groupId>com.bericotech</groupId>
   <artifactId>clavin</artifactId>
-  <version>2.1.0-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>CLAVIN</name>
   <description>CLAVIN (Cartographic Location And Vicinity INdexer)
@@ -29,6 +29,16 @@
     </license>
   </licenses>
   <developers>
+  	<developer>
+      <id>keastlack</id>
+      <name>Kainoa Eastlack</name>
+      <email>keastlack@novetta.com</email>
+      <url>https://github.com/eastlack</url>
+      <organization>Novetta</organization>
+      <roles>
+        <role>all the roles are mine now</role>
+      </roles>
+    </developer>
     <developer>
       <id>svaughan</id>
       <name>Steve Vaughan</name>
@@ -170,7 +180,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compile.encoding>UTF-8</maven.compile.encoding>
-    <java.version>1.7</java.version>
+    <java.version>14</java.version>
   </properties>
   <dependencies>
     <dependency>
