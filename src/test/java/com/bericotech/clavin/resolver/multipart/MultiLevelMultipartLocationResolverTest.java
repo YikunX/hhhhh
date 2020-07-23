@@ -50,10 +50,11 @@ import org.junit.runners.Parameterized.Parameters;
  * Tests mapping of city and N-level administrative divisions to a
  * single location.
  */
+@SuppressWarnings("unused")
 @RunWith(Parameterized.class)
 public class MultiLevelMultipartLocationResolverTest {
     // expected geonameID numbers for given location names
-    private static final int UNITED_STATES = 6252001;
+	private static final int UNITED_STATES = 6252001;
         private static final int MASSACHUSETTS = 6254926;
             private static final int BOSTON_MA = 4930956;
             private static final int HAVERHILL_MA = 4939085;

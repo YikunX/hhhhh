@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
  */
 @Deprecated
 public class LuceneLocationResolver implements LocationResolver {
-    public final static Logger logger = LoggerFactory.getLogger(LuceneLocationResolver.class);
+    public static final Logger logger = LoggerFactory.getLogger(LuceneLocationResolver.class);
 
     private final ClavinLocationResolver delegate;
 

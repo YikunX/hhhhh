@@ -514,14 +514,4 @@ public class LuceneGazetteer implements Gazetteer {
             }
         }
     }
-
-    private static class QueryPart {
-        public final Query query;
-        public final Occur occur;
-
-        public QueryPart(Query query, Occur occur) {
-            this.query = query;
-            this.occur = occur;
-        }
-    }
 }

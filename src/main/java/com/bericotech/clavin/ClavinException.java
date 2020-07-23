@@ -32,7 +32,9 @@ package com.bericotech.clavin;
  * A wrapper exception for errors occurring when resolving locations with CLAVIN.
  */
 public class ClavinException extends Exception {
-    /**
+	private static final long serialVersionUID = 4112396108869895367L;
+
+	/**
      * Create a new ClavinException.
      */
     public ClavinException() {
