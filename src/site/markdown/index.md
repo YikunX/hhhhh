@@ -24,7 +24,7 @@ CLAVIN is named in honor of a lovable, know-it-all postal worker from a famous 1
  
 ### License
 
-Copyright (C) 2012-2015 Berico Technologies
+Copyright (C) 2012-2016 Berico Technologies
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 

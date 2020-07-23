@@ -53,7 +53,7 @@ Once that all runs successfully, feel free to modify the CLAVIN source code to s
 License:
 --------
 
-Copyright (C) 2012-2013 Berico Technologies
+Copyright (C) 2012-2016 Berico Technologies
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

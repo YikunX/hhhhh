@@ -281,6 +281,7 @@ public class LuceneGazetteer implements Gazetteer {
                     // if we have already seen this GeoName and we are removing duplicates, skip to the next doc
                     continue;
                 }
+                
                 String matchedName = INDEX_NAME.getValue(doc);
                 if (!geoname.isAncestryResolved()) {
                     IndexableField parentIdField = doc.getField(IndexField.PARENT_ID.key());
