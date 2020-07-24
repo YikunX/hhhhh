@@ -566,7 +566,8 @@ public class IndexDirectoryBuilder {
         new IndexDirectoryBuilder(fullAncestry).buildIndex(idir, gazetteerFiles, altNamesFile);
     }
 
-    private static Options getOptions() {
+    @SuppressWarnings("static-access")		// This seems bad, but if it's broken now, it has been for many years already
+	private static Options getOptions() {
         Options options = new Options();
 
         options.addOption(OptionBuilder

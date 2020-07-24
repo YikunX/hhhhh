@@ -231,7 +231,7 @@ public class BasicGeoName implements GeoName {
             this.alternateNames = Collections.unmodifiableList(new ArrayList<String>(alternateNames));
         } else {
             // ensure this is never null
-            this.alternateNames = Collections.EMPTY_LIST;
+            this.alternateNames = Collections.emptyList();
         }
         this.latitude = latitude;
         this.longitude = longitude;
@@ -242,7 +242,7 @@ public class BasicGeoName implements GeoName {
             this.alternateCountryCodes = Collections.unmodifiableList(new ArrayList<CountryCode>(alternateCountryCodes));
         } else {
             // ensure this is never null
-            this.alternateCountryCodes = Collections.EMPTY_LIST;
+            this.alternateCountryCodes = Collections.emptyList();
         }
         this.featureClass = featureClass;
         // configure the feature code so top-level territories are distinguishable

@@ -229,7 +229,6 @@ public class MultipartLocationResolver {
      * @return the resolved location
      * @throws ClavinException if an error occurs while searching
      */
-    @SuppressWarnings("unchecked")
     public ResolvedLocation resolveLocation(final boolean fuzzy, final String... locationParts)
             throws ClavinException {
         final List<String> terms = new ArrayList<String>(locationParts.length+1);

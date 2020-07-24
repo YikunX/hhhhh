@@ -133,7 +133,6 @@ public class ClavinLocationResolver {
      * @return                   list of {@link ResolvedLocation} objects
      * @throws ClavinException   if an error occurs parsing the search terms
      **/
-    @SuppressWarnings("unchecked")
     public List<ResolvedLocation> resolveLocations(final List<LocationOccurrence> locations, final int maxHitDepth,
            final int maxContextWindow, final boolean fuzzy) throws ClavinException {
         return resolveLocations(locations, maxHitDepth, maxContextWindow, fuzzy, DEFAULT_ANCESTRY_MODE);

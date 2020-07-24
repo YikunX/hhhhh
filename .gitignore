@@ -1,6 +1,7 @@
 target/**
 indexDirectory*/**
 IndexDirectory*/
+adaptNLP/**
 .settings/
 .classpath
 .project

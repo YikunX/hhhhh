@@ -51,6 +51,7 @@ import org.junit.runners.Parameterized.Parameters;
  * {@link com.bericotech.clavin.resolver.ResolvedLocation} objects as performed by
  * {@link com.bericotech.clavin.resolver.multipart.MultipartLocationResolver#resolveMultipartLocation(MultipartLocationName, boolean)}.
  */
+@SuppressWarnings("unused")
 @RunWith(Parameterized.class)
 public class MultipartLocationResolverTest {
     // expected geonameID numbers for given location names

@@ -53,7 +53,6 @@ public class ListUtilsTest {
      * Warnings are suppressed only because Eclipse/Java can't properly
      * figure out nested generics.
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testChunkifyList() {
         List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
