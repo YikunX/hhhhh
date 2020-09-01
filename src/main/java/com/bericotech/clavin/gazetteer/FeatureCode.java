@@ -34,7 +34,7 @@ package com.bericotech.clavin.gazetteer;
  *
  */
 public enum FeatureCode {
-
+    // country, state, region
     ADM1(FeatureClass.A, "first-order administrative division", "a primary administrative division of a country, such as a state in the United States", false),
     ADM1H(FeatureClass.A, "historical first-order administrative division", "a former first-order administrative division", true),
     ADM2(FeatureClass.A, "second-order administrative division", "a subdivision of a first-order administrative division", false),
@@ -44,6 +44,7 @@ public enum FeatureCode {
     ADM4(FeatureClass.A, "fourth-order administrative division", "a subdivision of a third-order administrative division", false),
     ADM4H(FeatureClass.A, "historical fourth-order administrative division", "a former fourth-order administrative division", true),
     ADM5(FeatureClass.A, "fifth-order administrative division", "a subdivision of a fourth-order administrative division", false),
+    ADM5H(FeatureClass.A, "fifth-order administrative division", "a former fifth-order administrative division", true),
     ADMD(FeatureClass.A, "administrative division", "an administrative division of a country, undifferentiated as to administrative level", false),
     ADMDH(FeatureClass.A, "historical administrative division ", "a former administrative division of a political entity, undifferentiated as to administrative level", true),
     LTER(FeatureClass.A, "leased area", "a tract of land leased to another country, usually for military installations", false),
@@ -54,11 +55,12 @@ public enum FeatureCode {
     PCLI(FeatureClass.A, "independent political entity", "", false),
     PCLIX(FeatureClass.A, "section of independent political entity", "", false),
     PCLS(FeatureClass.A, "semi-independent political entity", "", false),
-    PRSH(FeatureClass.A, "parish", "an ecclesiastical district", false),
-    TERR(FeatureClass.A, "territory", "", false),
+    PRSH(FeatureClass.A, "parish", "an ecclesiastical district", false), TERR(FeatureClass.A, "territory", "", false),
     TERRI(FeatureClass.A, "independent territory", "a territory that acts as an independent political entity", false), // manually added to identify territories that can contain other administrative divisions
     ZN(FeatureClass.A, "zone", "", false),
     ZNB(FeatureClass.A, "buffer zone", "a zone recognized as a buffer between two nations in which military presence is minimal or absent", false),
+
+    // stream, lake
     AIRS(FeatureClass.H, "seaplane landing area", "a place on a waterbody where floatplanes land and take off", false),
     ANCH(FeatureClass.H, "anchorage", "an area where vessels may anchor", false),
     BAY(FeatureClass.H, "bay", "a coastal indentation between two capes or headlands, larger than a cove but smaller than a gulf", false),
@@ -126,8 +128,7 @@ public enum FeatureCode {
     LKSC(FeatureClass.H, "crater lakes", "lakes in a crater or caldera", false),
     LKSI(FeatureClass.H, "intermittent lakes", "", false),
     LKSN(FeatureClass.H, "salt lakes", "inland bodies of salt water with no outlet", false),
-    LKSNI(FeatureClass.H, "intermittent salt lakes", "", false),
-    LKX(FeatureClass.H, "section of lake", "", false),
+    LKSNI(FeatureClass.H, "intermittent salt lakes", "", false), LKX(FeatureClass.H, "section of lake", "", false),
     MFGN(FeatureClass.H, "salt evaporation ponds", "diked salt ponds used in the production of solar evaporated salt", false),
     MGV(FeatureClass.H, "mangrove swamp", "a tropical tidal mud flat characterized by mangrove vegetation", false),
     MOOR(FeatureClass.H, "moor(s)", "an area of open ground overlaid with wet peaty soils", false),
@@ -196,6 +197,8 @@ public enum FeatureCode {
     WTLDI(FeatureClass.H, "intermittent wetland", "", false),
     WTRC(FeatureClass.H, "watercourse", "a natural, well-defined channel produced by flowing water, or an artificial channel designed to carry flowing water", false),
     WTRH(FeatureClass.H, "waterhole(s)", "a natural hole, hollow, or small depression that contains water, used by man and animals, especially in arid areas", false),
+
+    // parks, area
     AGRC(FeatureClass.L, "agricultural colony", "a tract of land set aside for agricultural settlement", false),
     AMUS(FeatureClass.L, "amusement park", "Amusement Park are theme parks, adventure parks offering entertainment, similar to funfairs but with a fix location", false),
     AREA(FeatureClass.L, "area", "a tract of land without homogeneous character or boundaries", false),
@@ -244,11 +247,14 @@ public enum FeatureCode {
     SALT(FeatureClass.L, "salt area", "a shallow basin or flat where salt accumulates after periodic inundation", false),
     SNOW(FeatureClass.L, "snowfield", "an area of permanent snow and ice forming the accumulation area of a glacier", false),
     TRB(FeatureClass.L, "tribal area", "a tract of land used by nomadic or other tribes", false),
+
+    // city, village
     PPL(FeatureClass.P, "populated place", "a city, town, village, or other agglomeration of buildings where people live and work", false),
     PPLA(FeatureClass.P, "seat of a first-order administrative division", "seat of a first-order administrative division (PPLC takes precedence over PPLA)", false),
     PPLA2(FeatureClass.P, "seat of a second-order administrative division", "", false),
     PPLA3(FeatureClass.P, "seat of a third-order administrative division", "", false),
     PPLA4(FeatureClass.P, "seat of a fourth-order administrative division", "", false),
+    PPLA5(FeatureClass.P, "seat of a fifth-order administrative division", "", false),
     PPLC(FeatureClass.P, "capital of a political entity", "", false),
     PPLCH(FeatureClass.P, "historical capital of a political entity", "a former capital of a political entity", true),
     PPLF(FeatureClass.P, "farm village", "a populated place where the population is largely engaged in agricultural activities", false),
@@ -261,6 +267,8 @@ public enum FeatureCode {
     PPLW(FeatureClass.P, "destroyed populated place", "a village, town or city destroyed by a natural disaster, or by war", false),
     PPLX(FeatureClass.P, "section of populated place", "", false),
     STLMT(FeatureClass.P, "israeli settlement", "", false),
+
+    // road, railroad
     CSWY(FeatureClass.R, "causeway", "a raised roadway across wet ground or shallow water", false),
     OILP(FeatureClass.R, "oil pipeline", "a pipeline used for transporting oil", false),
     PRMN(FeatureClass.R, "promenade", "a place for public walking, usually along a beach front", false),
@@ -283,6 +291,8 @@ public enum FeatureCode {
     TNLRR(FeatureClass.R, "railroad tunnel", "a tunnel through which a railroad passes", false),
     TNLS(FeatureClass.R, "tunnels", "subterranean passageways for transportation", false),
     TRL(FeatureClass.R, "trail", "a path, track, or route used by pedestrians, animals, or off-road vehicles", false),
+
+    // spot, building, farm
     ADMF(FeatureClass.S, "administrative facility", "a government building", false),
     AGRF(FeatureClass.S, "agricultural facility", "a building and/or tract of land used for improving agriculture", false),
     AIRB(FeatureClass.S, "airbase", "an area used to store supplies, provide barracks for air force personnel, hangars and runways for aircraft, and from which operations are initiated", false),
@@ -290,10 +300,13 @@ public enum FeatureCode {
     AIRH(FeatureClass.S, "heliport", "a place where helicopters land and take off", false),
     AIRP(FeatureClass.S, "airport", "a place where aircraft regularly land and take off, with runways, navigational aids, and major facilities for the commercial handling of passengers and cargo", false),
     AIRQ(FeatureClass.S, "abandoned airfield", "", false),
+    AIRT(FeatureClass.S, "terminal", "airport facilities for the handling of freight and passengers", false),
     AMTH(FeatureClass.S, "amphitheater", "an oval or circular structure with rising tiers of seats about a stage or open space", false),
     ANS(FeatureClass.S, "ancient site", "a place where archeological remains, old structures, or cultural artifacts are located", false),
     AQC(FeatureClass.S, "aquaculture facility", "facility or area for the cultivation of aquatic animals and plants, especially fish, shellfish, and seaweed, in natural or controlled marine or freshwater environments; underwater agriculture", false),
     ARCH(FeatureClass.S, "arch", "a natural or man-made structure in the form of an arch", false),
+    ARCHV(FeatureClass.S, "archive", "a place or institution where documents are preserved", false),
+    ART(FeatureClass.S, "piece of art", "a piece of art, like a sculpture, painting. In contrast to monument (MNMT) it is not commemorative.", false),
     ASTR(FeatureClass.S, "astronomical station", "a point on the earth whose position has been determined by observations of celestial bodies", false),
     ASYL(FeatureClass.S, "asylum", "a facility where the insane are cared for and protected", false),
     ATHF(FeatureClass.S, "athletic field", "a tract of land used for playing team sports, and athletic track and field events", false),
@@ -302,6 +315,7 @@ public enum FeatureCode {
     BCN(FeatureClass.S, "beacon", "a fixed artificial navigation mark", false),
     BDG(FeatureClass.S, "bridge", "a structure erected across an obstacle such as a stream, road, etc., in order to carry roads, railroads, and pedestrians across", false),
     BDGQ(FeatureClass.S, "ruined bridge", "a destroyed or decayed bridge which is no longer functional", false),
+    BLDA(FeatureClass.S, "apartment building", "a building containing several individual apartments", false),
     BLDG(FeatureClass.S, "building(s)", "a structure built for permanent use, as a house, factory, etc.", false),
     BLDO(FeatureClass.S, "office building", "commercial building where business and/or services are conducted", false),
     BP(FeatureClass.S, "boundary marker", "a fixture marking a point along a boundary", false),
@@ -359,6 +373,7 @@ public enum FeatureCode {
     FRMT(FeatureClass.S, "farmstead", "the buildings and adjacent service areas of a farm", false),
     FT(FeatureClass.S, "fort", "a defensive structure or earthworks", false),
     FY(FeatureClass.S, "ferry", "a boat or other floating conveyance and terminal facilities regularly used to transport people and vehicles across a waterbody", false),
+    FYT(FeatureClass.S, "ferry terminal", "a place where ferries pick-up and discharge passengers, vehicles and or cargo", false),
     GATE(FeatureClass.S, "gate", "a controlled access entrance or exit", false),
     GDN(FeatureClass.S, "garden(s)", "an enclosure for displaying selected plant or animal life", false),
     GHAT(FeatureClass.S, "ghat", "a set of steps leading to a river, which are of religious significance, and at their base is usually a platform for bathing", false),
@@ -452,6 +467,7 @@ public enum FeatureCode {
     PRNQ(FeatureClass.S, "abandoned prison", "", false),
     PS(FeatureClass.S, "power station", "a facility for generating electric power", false),
     PSH(FeatureClass.S, "hydroelectric power station", "a building where electricity is generated from water power", false),
+    PSN(FeatureClass.S, "nuclear power station", "nuclear power station", false),
     PSTB(FeatureClass.S, "border post", "a post or station at an international boundary for the regulation of movement of people and goods", false),
     PSTC(FeatureClass.S, "customs post", "a building at an international boundary where customs and duties are paid on goods", false),
     PSTP(FeatureClass.S, "patrol post", "a post from which patrols are sent out", false),
@@ -459,6 +475,7 @@ public enum FeatureCode {
     PYRS(FeatureClass.S, "pyramids", "ancient massive structures of square ground plan with four triangular faces meeting at a point and used for enclosing tombs", false),
     QUAY(FeatureClass.S, "quay", "a structure of solid construction along a shore or bank which provides berthing for ships and which generally provides cargo handling facilities", false),
     RDCR(FeatureClass.S, "traffic circle", "a road junction formed around a central circle about which traffic moves in one direction only", false),
+    RDIN(FeatureClass.S, "intersection", "a junction of two or more highways by a system of separate levels that permit traffic to pass from one to another without the crossing of traffic streams", false),
     RECG(FeatureClass.S, "golf course", "a recreation field where golf is played", false),
     RECR(FeatureClass.S, "racetrack", "a track where races are held", false),
     REST(FeatureClass.S, "restaurant", "A place where meals are served to the public", false),
@@ -505,11 +522,14 @@ public enum FeatureCode {
     STNW(FeatureClass.S, "whaling station", "a facility for butchering whales and processing train oil", false),
     STPS(FeatureClass.S, "steps", "stones or slabs placed for ease in ascending or descending a steep slope", false),
     SWT(FeatureClass.S, "sewage treatment plant", "facility for the processing of sewage and/or wastewater", false),
+    SYG(FeatureClass.S, "synagogue", "a place for Jewish worship and religious instruction", false),
     THTR(FeatureClass.S, "theater", "A building, room, or outdoor structure for the presentation of plays, films, or other dramatic performances", false),
     TMB(FeatureClass.S, "tomb(s)", "a structure for interring bodies", false),
     TMPL(FeatureClass.S, "temple(s)", "an edifice dedicated to religious worship", false),
     TNKD(FeatureClass.S, "cattle dipping tank", "a small artificial pond used for immersing cattle in chemically treated water for disease control", false),
+    TOLL(FeatureClass.S, "toll gate/barrier", "highway toll collection station", false),
     TOWR(FeatureClass.S, "tower", "a high conspicuous structure, typically much higher than its diameter", false),
+    TRAM(FeatureClass.S, "tram", "rail vehicle along urban streets (also known as streetcar or trolley)", false),
     TRANT(FeatureClass.S, "transit terminal", "facilities for the handling of vehicular freight and passengers", false),
     TRIG(FeatureClass.S, "triangulation station", "a point on the earth whose position has been determined by triangulation", false),
     TRMO(FeatureClass.S, "oil pipeline terminal", "a tank farm or loading facility at the end of an oil pipeline", false),
@@ -526,6 +546,8 @@ public enum FeatureCode {
     WTRW(FeatureClass.S, "waterworks", "a facility for supplying potable water through a water source and a system of pumps and filtration beds", false),
     ZNF(FeatureClass.S, "free trade zone", "an area, usually a section of a port, where goods may be received and shipped free of customs duty and of most customs regulations", false),
     ZOO(FeatureClass.S, "zoo", "a zoological garden or park where wild animals are kept for exhibition", false),
+
+    // mountain, hill, rock
     ASPH(FeatureClass.T, "asphalt lake", "a small basin containing naturally occurring asphalt", false),
     ATOL(FeatureClass.T, "atoll(s)", "a ring-shaped coral reef which has closely spaced islands on it encircling a lagoon", false),
     BAR(FeatureClass.T, "bar", "a shallow ridge or mound of coarse unconsolidated material in a stream channel, at the mouth of a stream, estuary, or lagoon and in the wave-break zone along coasts", false),
@@ -624,6 +646,8 @@ public enum FeatureCode {
     VALS(FeatureClass.T, "valleys", "elongated depressions usually traversed by a stream", false),
     VALX(FeatureClass.T, "section of valley", "", false),
     VLC(FeatureClass.T, "volcano", "a conical elevation composed of volcanic materials with a crater at the top", false),
+
+    // undersea
     APNU(FeatureClass.U, "apron", "a gentle slope, with a generally smooth surface, particularly found around groups of islands and seamounts", false),
     ARCU(FeatureClass.U, "arch", "a low bulge around the southeastern end of the island of Hawaii", false),
     ARRU(FeatureClass.U, "arrugado", "an area of subdued corrugations off Baja California", false),
@@ -686,10 +710,13 @@ public enum FeatureCode {
     TRNU(FeatureClass.U, "trench", "a long, narrow, characteristically very deep and asymmetrical depression of the sea floor, with relatively steep sides", false),
     VALU(FeatureClass.U, "valley", "a relatively shallow, wide depression, the bottom of which usually has a continuous gradient", false),
     VLSU(FeatureClass.U, "valleys", "a relatively shallow, wide depression, the bottom of which usually has a continuous gradient", false),
+
+    // forest, health
     BUSH(FeatureClass.V, "bush(es)", "a small clump of conspicuous bushes in an otherwise bare area", false),
     CULT(FeatureClass.V, "cultivated area", "an area under cultivation", false),
     FRST(FeatureClass.V, "forest(s)", "an area dominated by tree vegetation", false),
     FRSTF(FeatureClass.V, "fossilized forest", "a forest fossilized by geologic processes and now exposed at the earth's surface", false),
+    GROVE(FeatureClass.V, "grove", "a small wooded area or collection of trees growing closely together, occurring naturally or deliberately planted", false),
     GRSLD(FeatureClass.V, "grassland", "an area dominated by grass vegetation", false),
     GRVC(FeatureClass.V, "coconut grove", "a planting of coconut trees", false),
     GRVO(FeatureClass.V, "olive grove", "a planting of olive trees", false),
@@ -703,9 +730,10 @@ public enum FeatureCode {
     TUND(FeatureClass.V, "tundra", "a marshy, treeless, high latitude plain, dominated by mosses, lichens, and low shrub vegetation under permafrost conditions", false),
     VIN(FeatureClass.V, "vineyard", "a planting of grapevines", false),
     VINS(FeatureClass.V, "vineyards", "plantings of grapevines", false),
+
     // manually added for locations not assigned to a feature code
     NULL(FeatureClass.NULL, "not available", "", false);
-    
+
     // the feature class this feature code belongs to
     private final FeatureClass featureClass;
 
@@ -722,9 +750,9 @@ public enum FeatureCode {
      * Constructor for {@link FeatureCode} enum type.
      *
      * @param featureClass class this code belongs to
-     * @param type name of code
-     * @param description description of code
-     * @param historical is this feature class a historical location
+     * @param type			name of code
+     * @param description	description of code
+     * @param historical	is this feature class a historical location
      */
     private FeatureCode(FeatureClass featureClass, String type, String description, boolean historical) {
         this.featureClass = featureClass;
