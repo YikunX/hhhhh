@@ -39,10 +39,10 @@ import com.bericotech.clavin.gazetteer.GeoName;
 import com.bericotech.clavin.gazetteer.LazyAncestryGeoName;
 import com.bericotech.clavin.index.BinarySimilarity;
 import com.bericotech.clavin.index.IndexField;
-import com.bericotech.clavin.index.WhitespaceLowerCaseAnalyzer;
 import com.bericotech.clavin.resolver.ResolvedLocation;
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.index.DirectoryReader;
@@ -88,7 +89,17 @@ public class LuceneGazetteer implements Gazetteer {
     /**
      * Index employs simple lower-casing & tokenizing on whitespace.
      */
-    private static final Analyzer INDEX_ANALYZER = new WhitespaceLowerCaseAnalyzer();
+    private static final Analyzer INDEX_ANALYZER;
+    static {
+    	Analyzer tmp = null;
+    	try {
+    		tmp = new StandardAnalyzer(Reader.nullReader());
+    	}
+    	catch (IOException e) {
+    		LOG.error("Failed to instantiate StandardAnalyzer for Lucene index");
+    	}
+    	INDEX_ANALYZER = tmp;
+    }
 
     /**
      * Custom Lucene sorting based on Lucene match score and the
@@ -97,7 +108,6 @@ public class LuceneGazetteer implements Gazetteer {
      */
     private static final Sort POPULATION_SORT = new Sort(new SortField[] {
         SortField.FIELD_SCORE,
-        // new SortField(POPULATION.key(), SortField.Type.LONG, true)
         new SortField(SORT_POP.key(), SortField.Type.LONG, true)
     });
 

@@ -39,6 +39,7 @@ import org.apache.lucene.analysis.util.CharTokenizer;
  * (redundant) implementation.
  * 
  */
+@Deprecated
 public class WhitespaceLowerCaseTokenizer extends CharTokenizer {
     
     /**

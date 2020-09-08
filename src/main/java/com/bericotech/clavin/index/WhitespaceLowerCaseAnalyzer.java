@@ -31,10 +31,12 @@ import org.apache.lucene.analysis.Analyzer;
  *###################################################################*/
 
 /**
+ * Deprecated; instead use: StandardAnalyzer(Reader.nullReader())
  * A Lucene Analyzer that filters WhitespaceTokenizer with
  * LowerCaseFilter.
  * 
  */
+@Deprecated
 public class WhitespaceLowerCaseAnalyzer extends Analyzer {
     /**
      * Simple default constructor for

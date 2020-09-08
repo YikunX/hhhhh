@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.IntPoint;
@@ -127,7 +129,7 @@ public class IndexDirectoryBuilder {
         FSDirectory index = FSDirectory.open(indexDir.toPath());
 
         // indexing by lower-casing & tokenizing on whitespace
-        Analyzer indexAnalyzer = new WhitespaceLowerCaseAnalyzer();
+        Analyzer indexAnalyzer = new StandardAnalyzer(Reader.nullReader());
 
         // create the object that will actually build the Lucene index
         indexWriter = new IndexWriter(index, new IndexWriterConfig(indexAnalyzer));
