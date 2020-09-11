@@ -48,9 +48,9 @@ public class MatchedLocation {
     private final Map<SearchLevel, Match> matches;
 
     public MatchedLocation(final Deque<SearchResult> results) {
-        matches = new EnumMap<SearchLevel, Match>(SearchLevel.class);
+        matches = new EnumMap<>(SearchLevel.class);
 
-        Map<SearchLevel, List<ResolvedLocation>> resultsMap = new EnumMap<SearchLevel, List<ResolvedLocation>>(SearchLevel.class);
+        Map<SearchLevel, List<ResolvedLocation>> resultsMap = new EnumMap<>(SearchLevel.class);
         for (SearchResult result : results) {
             resultsMap.put(result.level, result.locations);
         }

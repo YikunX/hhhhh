@@ -73,7 +73,7 @@ public class DefaultScorer implements Scorer {
     private static final int MAX_COMPONENT_WEIGHT;
     private static final int MAX_SINGLE_COMPONENT_WEIGHT;
     static {
-        Map<SearchLevel, Integer> weightMap = new EnumMap<SearchLevel, Integer>(SearchLevel.class);
+        Map<SearchLevel, Integer> weightMap = new EnumMap<>(SearchLevel.class);
         weightMap.put(SearchLevel.CITY, 5);
         weightMap.put(SearchLevel.COUNTRY, 4);
         weightMap.put(SearchLevel.ADMIN1, 3);
@@ -89,7 +89,7 @@ public class DefaultScorer implements Scorer {
         }
         MAX_COMPONENT_WEIGHT = maxWeight;
 
-        Map<SearchLevel, Integer> singleWeightMap = new EnumMap<SearchLevel, Integer>(SearchLevel.class);
+        Map<SearchLevel, Integer> singleWeightMap = new EnumMap<>(SearchLevel.class);
         singleWeightMap.put(SearchLevel.COUNTRY, 5);
         singleWeightMap.put(SearchLevel.ADMIN1, 4);
         singleWeightMap.put(SearchLevel.CITY, 3);
@@ -132,11 +132,10 @@ public class DefaultScorer implements Scorer {
         double compScore = (double) compWeight / (matchCount > 1 ? MAX_COMPONENT_WEIGHT : MAX_SINGLE_COMPONENT_WEIGHT);
         double avgDepth = totalDepth / matchCount;
 
-        double score = (MATCH_RATIO_WEIGHT * matchRatio) +
+        return (MATCH_RATIO_WEIGHT * matchRatio) +
                 (DL_DISTANCE_WEIGHT * avgDL) +
                 (COMPONENT_SCORE_WEIGHT * compScore) +
                 (SEARCH_DEPTH_WEIGHT * avgDepth);
-        return score;
     }
 
     @Override
