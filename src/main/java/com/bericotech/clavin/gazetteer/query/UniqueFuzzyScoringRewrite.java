@@ -13,7 +13,6 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 
 
-
 public final class UniqueFuzzyScoringRewrite extends TopTermsRewrite<DisjunctionMaxQuery> {
 	private List<Query> disjuncts;
 

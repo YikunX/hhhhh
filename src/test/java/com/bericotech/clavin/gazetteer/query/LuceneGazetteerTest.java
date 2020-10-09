@@ -80,41 +80,7 @@ public class LuceneGazetteerTest {
         instance = new LuceneGazetteer(INDEX_DIRECTORY);
         queryBuilder = new QueryBuilder().maxResults(1).fuzzyMode(FuzzyMode.OFF);
     }
-    
-    
-    @Test
-    public void testBasicQueryEverywhere() throws ClavinException {
-        Object[][] testCases = new Object[][]{
-            new Object[]{"Reston", RESTON_VA, "Gazetteer failed on Reston"},
-            new Object[]{"Boston", BOSTON_MA, "Gazetteer failed on Boston"},
-            new Object[]{"Fairfax", FAIRFAX_COUNTY_VA, "Gazetteer failed Fairfax"},
-            new Object[]{"Virginia", VIRGINIA, "Gazetteer failed on Virginia"},
-            new Object[]{"Straßenhaus", STRAßENHAUS_DE, "Gazetteer failed on Strassenhaus"},
-            new Object[]{"Gun Barrel", GUN_BARREL_CITY_TX, "Gazetteer failed on Gun Barrel City"},
-            new Object[]{"USSR", USSR, "Gazetteer failed on USSR"}
-            
-        };
-        for (Object[] test : testCases) {
-            // match a single location without fuzzy matching
-            List<ResolvedLocation> locs = instance.getClosestLocations(queryBuilder.location((String) test[0]).build());
-            Boolean passed = false;
-            for (ResolvedLocation loc : locs) {
-            	if (loc.getGeoname().getGeonameID() == (int)test[1]) {
-            		passed = true;
-            	}
-            }
-            
-            String message;
-            if (locs.size() == 0) {
-            	message = "No results for";
-            } else if (passed) {
-            	message = "Passed";
-            } else {
-            	message = "Failed";
-            }
-            System.out.println(message + " " + test[0]);
-        }
-    }
+ 
 
     /**
      * Ensure {@link LuceneGazetteer#getClosestLocations} isn't choking on input.
