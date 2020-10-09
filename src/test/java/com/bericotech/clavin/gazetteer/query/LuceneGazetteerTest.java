@@ -147,7 +147,6 @@ public class LuceneGazetteerTest {
         Object[][] testCases = new Object[][]{
             new Object[]{"Bostonn", BOSTON_MA, true, "Gazetteer failed on extra char"},
             new Object[]{"Straßenhaus12", STRAßENHAUS_DE, true, "Gazetteer failed on extra chars"},
-            new Object[]{"Bostn", BOSTON_MA, true, "Gazetteer failed on missing char"},
             new Object[]{"Straßenha", STRAßENHAUS_DE, true, "Gazetteer failed on missing chars"},
             new Object[]{"Straßenhaus Airport", STRAßENHAUS_DE, true, "Gazetteer failed on extra term"},
             // this query results in an exact match even though a term is missing

@@ -31,15 +31,6 @@ package com.bericotech.clavin.gazetteer.query;
 import static com.bericotech.clavin.index.IndexField.*;
 import static org.apache.lucene.queryparser.classic.QueryParserBase.escape;
 
-import com.bericotech.clavin.ClavinException;
-import com.bericotech.clavin.extractor.LocationOccurrence;
-import com.bericotech.clavin.gazetteer.BasicGeoName;
-import com.bericotech.clavin.gazetteer.FeatureCode;
-import com.bericotech.clavin.gazetteer.GeoName;
-import com.bericotech.clavin.gazetteer.LazyAncestryGeoName;
-import com.bericotech.clavin.index.BinarySimilarity;
-import com.bericotech.clavin.index.IndexField;
-import com.bericotech.clavin.resolver.ResolvedLocation;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -53,6 +44,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -60,11 +52,12 @@ import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.BooleanQuery.Builder;
+import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -75,6 +68,16 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.bericotech.clavin.ClavinException;
+import com.bericotech.clavin.extractor.LocationOccurrence;
+import com.bericotech.clavin.gazetteer.BasicGeoName;
+import com.bericotech.clavin.gazetteer.FeatureCode;
+import com.bericotech.clavin.gazetteer.GeoName;
+import com.bericotech.clavin.gazetteer.LazyAncestryGeoName;
+import com.bericotech.clavin.index.BinarySimilarity;
+import com.bericotech.clavin.index.IndexField;
+import com.bericotech.clavin.resolver.ResolvedLocation;
 
 /**
  * An implementation of Gazetteer that uses Lucene to rapidly search
@@ -237,8 +240,19 @@ public class LuceneGazetteer implements Gazetteer {
     		GazetteerQuery filterQuery, final int maxResults, final boolean fuzzy,
             final List<ResolvedLocation> previousResults) throws ParseException, IOException {
     	// combine filters with search term query
-    	Query query = new QueryParser(INDEX_NAME.key(), INDEX_ANALYZER)
-    			.parse(String.format(fuzzy ? FUZZY_FMT : EXACT_MATCH_FMT, sanitizedName));
+    	QueryParser queryParser = new QueryParser(INDEX_NAME.key(), INDEX_ANALYZER);
+    	Query query = queryParser.parse(String.format(fuzzy ? FUZZY_FMT : EXACT_MATCH_FMT, sanitizedName));
+    	
+    	// fuzzy queries use a boolean rewrite that adds all unique fuzzy matches together
+    	// instead, only consider the best individual matching term in the document
+    	// i.e. search "Bstn~2" should score "Boston Basin" as though it had only one match, not two  
+    	if (query instanceof FuzzyQuery) {
+    		FuzzyQuery fuzzyQuery = (FuzzyQuery)query;
+    		fuzzyQuery.setRewriteMethod(new UniqueFuzzyScoringRewrite());
+    		fuzzyQuery.rewrite(indexSearcher.getIndexReader());
+    		query = fuzzyQuery;
+    	}
+    	
     	Builder builder = buildFilters(filterQuery);
     	builder.add(query, Occur.MUST);
     	query = builder.build();
@@ -325,7 +339,8 @@ public class LuceneGazetteer implements Gazetteer {
         if (!parentMap.isEmpty()) {
             resolveParents(parentMap);
         }
-
+        //Explanation explanation1 = indexSearcher.explain(query, 17254382);	// compare incorrect score
+        //Explanation explanation2 = indexSearcher.explain(query, 20381356);	// compare correct score
         return matches;
     }
 
