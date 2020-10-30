@@ -80,6 +80,7 @@ public class LuceneGazetteerTest {
         instance = new LuceneGazetteer(INDEX_DIRECTORY);
         queryBuilder = new QueryBuilder().maxResults(1).fuzzyMode(FuzzyMode.OFF);
     }
+ 
 
     /**
      * Ensure {@link LuceneGazetteer#getClosestLocations} isn't choking on input.
@@ -112,7 +113,6 @@ public class LuceneGazetteerTest {
         Object[][] testCases = new Object[][]{
             new Object[]{"Bostonn", BOSTON_MA, true, "Gazetteer failed on extra char"},
             new Object[]{"Straßenhaus12", STRAßENHAUS_DE, true, "Gazetteer failed on extra chars"},
-            new Object[]{"Bostn", BOSTON_MA, true, "Gazetteer failed on missing char"},
             new Object[]{"Straßenha", STRAßENHAUS_DE, true, "Gazetteer failed on missing chars"},
             new Object[]{"Straßenhaus Airport", STRAßENHAUS_DE, true, "Gazetteer failed on extra term"},
             // this query results in an exact match even though a term is missing
@@ -263,6 +263,14 @@ public class LuceneGazetteerTest {
             assertNotNull(String.format("Unexpected null returned by Gazetteer for '%s'", test[1]), geoname);
             assertEquals(String.format("Expected GeoName ID [%d] for '%s'", test[0], test[1]), test[0], geoname.getGeonameID());
         }
+    }
+    
+    @Test
+    public void testDifferingLookupEquality() throws ClavinException{
+    	GeoName idGeoName = instance.getGeoName(RESTON_VA);
+    	List<ResolvedLocation> locs = instance.getClosestLocations(queryBuilder.location("Reston").build());
+    	GeoName strGeoName = locs.get(0).getGeoname();
+    	assertEquals("Querying by ID and string should return the same result.", idGeoName, strGeoName);
     }
 
     /**

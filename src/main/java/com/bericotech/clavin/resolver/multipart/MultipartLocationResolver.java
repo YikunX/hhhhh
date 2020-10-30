@@ -62,7 +62,7 @@ public class MultipartLocationResolver {
     /**
      * The logger.
      */
-    private final static Logger LOG = LoggerFactory.getLogger(MultipartLocationResolver.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MultipartLocationResolver.class);
 
     /**
      * The hit depth used during searches.
@@ -231,7 +231,7 @@ public class MultipartLocationResolver {
      */
     public ResolvedLocation resolveLocation(final boolean fuzzy, final String... locationParts)
             throws ClavinException {
-        final List<String> terms = new ArrayList<String>(locationParts.length+1);
+        final List<String> terms = new ArrayList<>(locationParts.length+1);
         // terms will be a list of broadest to narrowest; e.g. United States, Virginia, Fairfax County, Reston
         for (String part : locationParts) {
             if (part != null && !part.trim().equals("")) {
@@ -243,8 +243,8 @@ public class MultipartLocationResolver {
             return null;
         }
 
-        Set<MatchedLocation> candidates = new HashSet<MatchedLocation>();
-        Deque<SearchResult> matches = new LinkedList<SearchResult>();
+        Set<MatchedLocation> candidates = new HashSet<>();
+        Deque<SearchResult> matches = new LinkedList<>();
         QueryBuilder query = new QueryBuilder()
                 .maxResults(MAX_RESULTS)
                 // translate CLAVIN 1.x 'fuzzy' parameter into NO_EXACT or OFF; it isn't
@@ -257,8 +257,8 @@ public class MultipartLocationResolver {
         // Using post-processing sort instead of SortedSet implementation (TreeSet) because
         // TreeSet uses compareTo instead of equals/hashCode to eliminate duplicates and
         // incorrectly excludes elements that evaluate to the same sort score
-        List<MatchedLocation> candidateList = new ArrayList<MatchedLocation>(candidates);
-        Collections.sort(candidateList, new Comparator<MatchedLocation>() {
+        List<MatchedLocation> candidateList = new ArrayList<>(candidates);
+        Collections.sort(candidateList, new Comparator<>() {
             @Override
             public int compare(final MatchedLocation loc1, final MatchedLocation loc2) {
                 double score1 = scorer.score(terms, loc1);
@@ -281,7 +281,6 @@ public class MultipartLocationResolver {
         return location;
     }
 
-    @SuppressWarnings("unchecked")
     private void findCandidates(final Set<MatchedLocation> candidates, final List<String> terms, final SearchLevel level,
             final Deque<SearchResult> matches, final QueryBuilder query) throws ClavinException {
         // if there are no more terms or level is null, add a candidate to the list
@@ -300,7 +299,7 @@ public class MultipartLocationResolver {
         }
 
         String term = terms.get(0);
-        List<String> nextTerms = terms.size() > 1 ? terms.subList(1, terms.size()) : Collections.EMPTY_LIST;
+        List<String> nextTerms = terms.size() > 1 ? terms.subList(1, terms.size()) : Collections.emptyList();
         SearchResult lastMatch = matches.peek();
         level.apply(query).location(term).clearParentIds();
         if (lastMatch != null) {
@@ -315,9 +314,9 @@ public class MultipartLocationResolver {
         } else {
             // we found results, process them to configure the filters for the next
             // level of the search and add them to the matches stack
-            Set<Integer> parentIds = new HashSet<Integer>();
-            Set<String> parentCodes = new HashSet<String>();
-            Set<String> foundParents = new HashSet<String>();
+            Set<Integer> parentIds = new HashSet<>();
+            Set<String> parentCodes = new HashSet<>();
+            Set<String> foundParents = new HashSet<>();
             // only include the first (best) result for each distinct parent in the filter set
             for (ResolvedLocation loc : results) {
                 GeoName geo = loc.getGeoname();

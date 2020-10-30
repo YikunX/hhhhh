@@ -155,12 +155,11 @@ public class ClavinLocationResolver {
      * @return                   list of {@link ResolvedLocation} objects
      * @throws ClavinException   if an error occurs parsing the search terms
      **/
-    @SuppressWarnings("unchecked")
     public List<ResolvedLocation> resolveLocations(final List<LocationOccurrence> locations, final int maxHitDepth,
             final int maxContextWindow, final boolean fuzzy, final AncestryMode ancestryMode) throws ClavinException {
         // are you forgetting something? -- short-circuit if no locations were provided
         if (locations == null || locations.isEmpty()) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         /* Various named entity recognizers tend to mistakenly extract demonyms
@@ -169,14 +168,14 @@ public class ClavinLocationResolver {
          * filter them out from the list of {@link LocationOccurrence}s passed
          * to the resolver.
          */
-        List<LocationOccurrence> filteredLocations = new ArrayList<LocationOccurrence>();
+        List<LocationOccurrence> filteredLocations = new ArrayList<>();
         for (LocationOccurrence location : locations)
             if (!isDemonym(location))
                 filteredLocations.add(location);
 
         // did we filter *everything* out?
         if (filteredLocations.isEmpty()) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         QueryBuilder builder = new QueryBuilder()
@@ -189,7 +188,7 @@ public class ClavinLocationResolver {
 
         if (maxHitDepth > 1) { // perform context-based heuristic matching
             // stores all possible matches for each location name
-            List<List<ResolvedLocation>> allCandidates = new ArrayList<List<ResolvedLocation>>();
+            List<List<ResolvedLocation>> allCandidates = new ArrayList<>();
 
             // loop through all the location names
             for (LocationOccurrence location : filteredLocations) {
@@ -197,13 +196,13 @@ public class ClavinLocationResolver {
                 List<ResolvedLocation> candidates = gazetteer.getClosestLocations(builder.location(location).build());
 
                 // if we found some possible matches, save them
-                if (candidates.size() > 0) {
+                if (!candidates.isEmpty()) {
                     allCandidates.add(candidates);
                 }
             }
 
             // initialize return object
-            List<ResolvedLocation> bestCandidates = new ArrayList<ResolvedLocation>();
+            List<ResolvedLocation> bestCandidates = new ArrayList<>();
 
             // split-up allCandidates into reasonably-sized chunks to
             // limit computational load when heuristically selecting
@@ -217,7 +216,7 @@ public class ClavinLocationResolver {
             return bestCandidates;
         } else { // use no heuristics, simply choose matching location with greatest population
             // initialize return object
-            List<ResolvedLocation> resolvedLocations = new ArrayList<ResolvedLocation>();
+            List<ResolvedLocation> resolvedLocations = new ArrayList<>();
 
             // stores possible matches for each location name
             List<ResolvedLocation> candidateLocations;
@@ -229,7 +228,7 @@ public class ClavinLocationResolver {
                 candidateLocations = gazetteer.getClosestLocations(builder.location(location).build());
 
                 // if a match was found, add it to the return list
-                if (candidateLocations.size() > 0) {
+                if (!candidateLocations.isEmpty()) {
                     resolvedLocations.add(candidateLocations.get(0));
                 }
             }
@@ -262,7 +261,7 @@ public class ClavinLocationResolver {
      */
     private List<ResolvedLocation> pickBestCandidates(final List<List<ResolvedLocation>> allCandidates) {
         // initialize return object
-        List<ResolvedLocation> bestCandidates = new ArrayList<ResolvedLocation>();
+        List<ResolvedLocation> bestCandidates = new ArrayList<>();
 
         // variables used in heuristic matching
         Set<CountryCode> countries;
@@ -289,7 +288,7 @@ public class ClavinLocationResolver {
             for (List<ResolvedLocation> combo : generateAllCombos(allCandidates, 0, candidateDepth)) {
                 // these lists store the country codes & admin1 codes for each candidate
                 countries = EnumSet.noneOf(CountryCode.class);
-                states = new HashSet<String>();
+                states = new HashSet<>();
                 for (ResolvedLocation location: combo) {
                     countries.add(location.getGeoname().getPrimaryCountryCode());
                     states.add(location.getGeoname().getPrimaryCountryCode() + location.getGeoname().getAdmin1Code());
@@ -350,13 +349,13 @@ public class ClavinLocationResolver {
         // stopping condition
         if (index == allCandidates.size()) {
             // return a list with an empty list
-            List<List<ResolvedLocation>> result = new ArrayList<List<ResolvedLocation>>();
-            result.add(new ArrayList<ResolvedLocation>());
+            List<List<ResolvedLocation>> result = new ArrayList<>();
+            result.add(new ArrayList<>());
             return result;
         }
 
         // initialize return object
-        List<List<ResolvedLocation>> result = new ArrayList<List<ResolvedLocation>>();
+        List<List<ResolvedLocation>> result = new ArrayList<>();
 
         // recursive call
         List<List<ResolvedLocation>> recursive = generateAllCombos(allCandidates, index+1, depth);
@@ -365,7 +364,7 @@ public class ClavinLocationResolver {
         for (int j = 0; j < Math.min(allCandidates.get(index).size(), depth); j++) {
             // add the element to all combinations obtained for the rest of the lists
             for (List<ResolvedLocation> recList : recursive) {
-                List<ResolvedLocation> newList = new ArrayList<ResolvedLocation>();
+                List<ResolvedLocation> newList = new ArrayList<>();
                 // add element of the first list
                 newList.add(allCandidates.get(index).get(j));
                 // copy a combination from recursive

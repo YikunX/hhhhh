@@ -280,6 +280,7 @@ public enum CountryCode {
     WS("Samoa", 4034894),
     YE("Yemen", 69543),
     YT("Mayotte", 1024031),
+    YU("Yugoslavia", 7500737),		// this doesn't really exist anymore either; why is this here?
     ZA("South Africa", 953987),
     ZM("Zambia", 895949),
     ZW("Zimbabwe", 878675),

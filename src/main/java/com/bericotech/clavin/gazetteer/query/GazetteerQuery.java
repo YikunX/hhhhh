@@ -97,7 +97,6 @@ public class GazetteerQuery {
      * @param parentIds the set of parent IDs to restrict the search to; these will be OR'ed
      * @param featureCodes the set of feature codes to restrict the search to; these will be OR'ed
      */
-    @SuppressWarnings("unchecked")
     public GazetteerQuery(final LocationOccurrence occurrence, final int maxResults, final FuzzyMode fuzzyMode,
             final AncestryMode ancestryMode, final boolean includeHistorical, final boolean filterDupes,
             final Set<Integer> parentIds, final Set<FeatureCode> featureCodes) {
@@ -107,7 +106,7 @@ public class GazetteerQuery {
         this.ancestryMode = ancestryMode;
         this.includeHistorical = includeHistorical;
         this.filterDupes = filterDupes;
-        this.parentIds = parentIds != null ? new HashSet<Integer>(parentIds) : Collections.EMPTY_SET;
+        this.parentIds = parentIds != null ? new HashSet<>(parentIds) : Collections.emptySet();
         this.featureCodes = featureCodes != null ? EnumSet.copyOf(featureCodes) : EnumSet.noneOf(FeatureCode.class);
     }
 

@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,25 +31,26 @@ import java.util.TreeSet;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.IntField;
-import org.apache.lucene.document.LongField;
+import org.apache.lucene.document.IntPoint;
+import org.apache.lucene.document.NumericDocValuesField;
+import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,7 +90,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class IndexDirectoryBuilder {
-    private final static Logger LOG = LoggerFactory.getLogger(IndexDirectoryBuilder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(IndexDirectoryBuilder.class);
     private static final String HELP_OPTION = "help";
     private static final String FULL_ANCESTRY_OPTION = "with-full-ancestry";
     private static final String GAZETTEER_FILES_OPTION = "gazetteer-files";
@@ -111,9 +113,9 @@ public class IndexDirectoryBuilder {
     private int indexCount;
 
     private IndexDirectoryBuilder(final boolean fullAncestryIn) {
-        adminMap = new TreeMap<String, GeoName>();
-        unresolvedMap = new TreeMap<String, Set<GeoName>>();
-        alternateNameMap = new HashMap<Integer, AlternateName>();
+        adminMap = new TreeMap<>();
+        unresolvedMap = new TreeMap<>();
+        alternateNameMap = new HashMap<>();
         this.fullAncestry = fullAncestryIn;
     }
 
@@ -124,13 +126,13 @@ public class IndexDirectoryBuilder {
 
         // Create a new index file on disk, allowing Lucene to choose
         // the best FSDirectory implementation given the environment.
-        FSDirectory index = FSDirectory.open(indexDir);
+        FSDirectory index = FSDirectory.open(indexDir.toPath());
 
         // indexing by lower-casing & tokenizing on whitespace
-        Analyzer indexAnalyzer = new WhitespaceLowerCaseAnalyzer();
+        Analyzer indexAnalyzer = new StandardAnalyzer(Reader.nullReader());
 
         // create the object that will actually build the Lucene index
-        indexWriter = new IndexWriter(index, new IndexWriterConfig(Version.LUCENE_4_9, indexAnalyzer));
+        indexWriter = new IndexWriter(index, new IndexWriterConfig(indexAnalyzer));
 
         // let's see how long this takes...
         Date start = new Date();
@@ -151,14 +153,12 @@ public class IndexDirectoryBuilder {
                     count += 1;
                     // print progress update to console
                     if (count % 100000 == 0 ) {
-                        LOG.info("rowcount: " + count);
+                        LOG.info("rowcount: {}", count);
                     }
                     GeoName geoName = BasicGeoName.parseFromGeoNamesRecord(line);
                     resolveAncestry(geoName);
-                } catch (IOException e) {
-                    LOG.info("Skipping... Error on line: {}", line);
-                } catch (RuntimeException re) {
-                    LOG.info("Skipping... Error on line: {}", line);
+                } catch (IOException|RuntimeException e) {
+                    LOG.info("{} ({})", e.getCause(), e.getMessage());
                 }
             }
             reader.close();
@@ -183,7 +183,7 @@ public class IndexDirectoryBuilder {
         }
 
         LOG.info("[DONE]");
-        LOG.info("{} geonames added to index. ({} records)", indexWriter.maxDoc(), indexCount);
+        LOG.info("{} geonames added to index. ({} records)", indexWriter.getDocStats().maxDoc, indexCount);
         LOG.info("Merging indices... please wait.");
 
         indexWriter.close();
@@ -192,9 +192,9 @@ public class IndexDirectoryBuilder {
         LOG.info("[DONE]");
 
         DateFormat df = new SimpleDateFormat("HH:mm:ss");
-        long elapsed_MILLIS = stop.getTime() - start.getTime();
-        LOG.info("Process started: " + df.format(start) + ", ended: " + df.format(stop)
-                + "; elapsed time: " + MILLISECONDS.toSeconds(elapsed_MILLIS) + " seconds.");
+        long elapsedTime = stop.getTime() - start.getTime();
+        LOG.info("Process started: {}, ended: {}; elapsed time: {} seconds.",
+        		df.format(start), df.format(stop), MILLISECONDS.toSeconds(elapsedTime));
     }
 
     private static final int ALT_NAMES_ID_FIELD = 1;
@@ -243,17 +243,12 @@ public class IndexDirectoryBuilder {
     private void resolveAncestry(final GeoName geoname) throws IOException {
         // set this GeoName's parent if it is known
         String parentKey = geoname.getParentAncestryKey();
-        if (parentKey != null) {
-            // if we cannot successfully set the parent, add to the unresolved map,
-            // waiting for a parent to be set
-            if (!geoname.setParent(adminMap.get(parentKey)) || !geoname.isAncestryResolved()) {
-                Set<GeoName> unresolved = unresolvedMap.get(parentKey);
-                if (unresolved == null) {
-                    unresolved = new HashSet<GeoName>();
-                    unresolvedMap.put(parentKey, unresolved);
-                }
-                unresolved.add(geoname);
-            }
+        
+        // if we cannot successfully set the parent, add to the unresolved map,
+        // waiting for a parent to be set
+        if (parentKey != null && (!geoname.setParent(adminMap.get(parentKey)) || !geoname.isAncestryResolved())) {
+            Set<GeoName> unresolved = unresolvedMap.computeIfAbsent(parentKey, k -> new HashSet<>());
+            unresolved.add(geoname);
         }
         // if this geoname is fully resolved, add it to the index
         if (geoname.isAncestryResolved()) {
@@ -285,10 +280,8 @@ public class IndexDirectoryBuilder {
                 Iterator<GeoName> iter = descendants.iterator();
                 while (iter.hasNext()) {
                     GeoName desc = iter.next();
-                    if (setParent) {
-                        if (!desc.setParent(geoname)) {
-                            LOG.error("Error setting parent [{}] of GeoName [{}].", geoname, desc);
-                        }
+                    if (setParent && !desc.setParent(geoname)) {
+                    	LOG.error("Error setting parent [{}] of GeoName [{}].", geoname, desc);
                     }
                     if (desc.isAncestryResolved()) {
                         checkDescendantsResolved(desc, false);
@@ -305,7 +298,7 @@ public class IndexDirectoryBuilder {
 
     private void resolveUnresolved() throws IOException {
         // sort keys in ascending order by level of specificity and name
-        Set<String> keys = new TreeSet<String>(new Comparator<String>() {
+        Set<String> keys = new TreeSet<>(new Comparator<String>() {
             @Override
             public int compare(final String strA, final String strB) {
                 int specA = strA.split("\\.").length;
@@ -372,13 +365,15 @@ public class IndexDirectoryBuilder {
      */
     private void indexGeoName(final GeoName geoName) throws IOException {
         indexCount++;
+        
         // find all unique names for this GeoName
         String nm = geoName.getName();
         String asciiNm = geoName.getAsciiName();
-        Set<String> names = new HashSet<String>();
+        Set<String> names = new HashSet<>();
         names.add(nm);
         names.add(asciiNm);
         names.addAll(geoName.getAlternateNames());
+        
         // if this is a top-level administrative division, add its primary and alternate country codes
         // if they are not already found in the name or alternate names
         if (geoName.isTopLevelAdminDivision()) {
@@ -400,7 +395,10 @@ public class IndexDirectoryBuilder {
         // reuse a single Document and field instances
         Document doc = new Document();
         doc.add(new StoredField(GEONAME.key(), fullAncestry ? geoName.getGazetteerRecordWithAncestry() : geoName.getGazetteerRecord()));
-        doc.add(new IntField(GEONAME_ID.key(), geoName.getGeonameID(), Field.Store.YES));
+        doc.add(new StoredField(GEONAME_ID.key(), geoName.getGeonameID()));				// store the value
+        doc.add(new IntPoint(GEONAME_ID.key(), geoName.getGeonameID()));				// allow range queries
+        doc.add(new NumericDocValuesField(GEONAME_ID.key(), geoName.getGeonameID()));	// allow sorting and scoring
+        
         // if the alternate names file was loaded and we found a preferred name for this GeoName, store it
         if (preferredName != null) {
             doc.add(new StoredField(PREFERRED_NAME.key(), preferredName.name));
@@ -408,28 +406,43 @@ public class IndexDirectoryBuilder {
         // index the direct parent ID in the PARENT_ID field
         GeoName parent = geoName.getParent();
         if (parent != null) {
-            doc.add(new IntField(PARENT_ID.key(), parent.getGeonameID(), Field.Store.YES));
+            doc.add(new StoredField(PARENT_ID.key(), parent.getGeonameID()));
+            doc.add(new IntPoint(PARENT_ID.key(), parent.getGeonameID()));
+            doc.add(new NumericDocValuesField(PARENT_ID.key(), parent.getGeonameID()));
         }
         // index all ancestor IDs in the ANCESTOR_IDS field; this is a secondary field
         // so it can be used to restrict searches and PARENT_ID can be used for ancestor
         // resolution
         while (parent != null) {
-            doc.add(new IntField(ANCESTOR_IDS.key(), parent.getGeonameID(), Field.Store.YES));
+            doc.add(new StoredField(ANCESTOR_IDS.key(), parent.getGeonameID()));
+            doc.add(new IntPoint(ANCESTOR_IDS.key(), parent.getGeonameID()));
+            //doc.add(new NumericDocValuesField(ANCESTOR_IDS.key(), parent.getGeonameID()));
             parent = parent.getParent();
         }
-        doc.add(new LongField(POPULATION.key(), geoName.getPopulation(), Field.Store.YES));
+        doc.add(new StoredField(POPULATION.key(), geoName.getGeonameID()));
+        doc.add(new LongPoint(POPULATION.key(), geoName.getGeonameID()));
+        doc.add(new NumericDocValuesField(POPULATION.key(), geoName.getGeonameID()));
+        
         // set up sort field based on population and geographic feature type
-        if (geoName.getFeatureClass().equals(FeatureClass.P) || geoName.getFeatureCode().name().startsWith("PCL")) {
-            if (geoName.getGeonameID() != 2643741) // todo: temporary hack until GeoNames.org fixes the population for City of London
-                // boost cities and countries when sorting results by population
-                doc.add(new LongField(SORT_POP.key(), geoName.getPopulation() * 11, Field.Store.YES));
+        // TODO: remove temporary hack once GeoNames.org fixes the population for City of London
+        int populationBoost = 1;
+        if ((geoName.getFeatureClass().equals(FeatureClass.P) || geoName.getFeatureCode().name().startsWith("PCL"))
+        		&& geoName.getGeonameID() != 2643741) {
+        	// boost cities and countries when sorting results by population
+        	populationBoost = 11;
         } else {
             // don't boost anything else, because people rarely talk about other stuff
             // (e.g., Washington State's population is more than 10x that of Washington, DC
             // but Washington, DC is mentioned far more frequently than Washington State)
-            doc.add(new LongField(SORT_POP.key(), geoName.getPopulation(), Field.Store.YES));
+        	// although honestly there's probably a lot of room for improvement here
         }
-        doc.add(new IntField(HISTORICAL.key(), IndexField.getBooleanIndexValue(geoName.getFeatureCode().isHistorical()), Field.Store.NO));
+        doc.add(new StoredField(SORT_POP.key(), geoName.getPopulation() * populationBoost));
+        doc.add(new LongPoint(SORT_POP.key(), geoName.getPopulation() * populationBoost));
+        doc.add(new NumericDocValuesField(SORT_POP.key(), geoName.getPopulation() * populationBoost));
+        
+        int isHistorical = IndexField.getBooleanIndexValue(geoName.getFeatureCode().isHistorical());
+        doc.add(new IntPoint(HISTORICAL.key(), isHistorical));
+        doc.add(new NumericDocValuesField(HISTORICAL.key(), isHistorical));
         doc.add(new StringField(FEATURE_CODE.key(), geoName.getFeatureCode().name(), Field.Store.NO));
 
         // create a unique Document for each name of this GeoName
@@ -443,8 +456,8 @@ public class IndexDirectoryBuilder {
 
     private void logUnresolved() {
         int unresolvedGeoCount = 0;
-        Map<String, Integer> unresolvedCodeMap = new TreeMap<String, Integer>();
-        Map<String, Integer> missingCodeMap = new TreeMap<String, Integer>();
+        Map<String, Integer> unresolvedCodeMap = new TreeMap<>();
+        Map<String, Integer> missingCodeMap = new TreeMap<>();
         for (Map.Entry<String, Set<GeoName>> entry : unresolvedMap.entrySet()) {
             LOG.trace("{}: {} unresolved GeoNames", entry.getKey(), entry.getValue().size());
             unresolvedGeoCount += entry.getValue().size();
@@ -507,7 +520,7 @@ public class IndexDirectoryBuilder {
     public static void main(String[] args) throws IOException {
         Options options = getOptions();
         CommandLine cmd = null;
-        CommandLineParser parser = new GnuParser();
+        CommandLineParser parser = new DefaultParser();
         try {
             cmd = parser.parse(options, args);
         } catch (ParseException pe) {
@@ -542,7 +555,7 @@ public class IndexDirectoryBuilder {
             }
         }
 
-        List<File> gazetteerFiles = new ArrayList<File>();
+        List<File> gazetteerFiles = new ArrayList<>();
         for (String gp : gazetteerPaths) {
             File gf = new File(gp);
             if (gf.isFile() && gf.canRead()) {
@@ -566,47 +579,47 @@ public class IndexDirectoryBuilder {
         new IndexDirectoryBuilder(fullAncestry).buildIndex(idir, gazetteerFiles, altNamesFile);
     }
 
-    @SuppressWarnings("static-access")		// This seems bad, but if it's broken now, it has been for many years already
+    
 	private static Options getOptions() {
         Options options = new Options();
 
-        options.addOption(OptionBuilder
-                .withLongOpt(HELP_OPTION)
-                .withDescription("Print help")
-                .create('?'));
+        options.addOption(Option.builder("?")
+                .longOpt(HELP_OPTION)
+                .desc("Print help")
+                .build());
 
-        options.addOption(OptionBuilder
-                .withLongOpt(FULL_ANCESTRY_OPTION)
-                .withDescription("Store the gazetteer records for the full ancestry tree of each element."
+        options.addOption(Option.builder()
+                .longOpt(FULL_ANCESTRY_OPTION)
+                .desc("Store the gazetteer records for the full ancestry tree of each element."
                         + " This will increase performance at the expense of a larger index.")
-                .create());
+                .build());
 
-        options.addOption(OptionBuilder
-                .withLongOpt(GAZETTEER_FILES_OPTION)
-                .withDescription(String.format("The ':'-separated list of input Gazetteer files to parse.  Default: %s",
+        options.addOption(Option.builder("i")
+                .longOpt(GAZETTEER_FILES_OPTION)
+                .desc(String.format("The ':'-separated list of input Gazetteer files to parse.  Default: %s",
                         StringUtils.join(DEFAULT_GAZETTEER_FILES, ':')))
                 .hasArgs()
-                .withValueSeparator(':')
-                .create('i'));
+                .valueSeparator(':')
+                .build());
 
-        options.addOption(OptionBuilder
-                .withLongOpt(ALTERNATE_NAMES_OPTION)
-                .withDescription("When provided, the path to the GeoNames.org alternate names file for resolution of common and "
+        options.addOption(Option.builder()
+                .longOpt(ALTERNATE_NAMES_OPTION)
+                .desc("When provided, the path to the GeoNames.org alternate names file for resolution of common and "
                         + "short names for each location. If not provided, the default name for each location will be used.")
                 .hasArg()
-                .create());
+                .build());
 
-        options.addOption(OptionBuilder
-                .withLongOpt(INDEX_PATH_OPTION)
-                .withDescription(String.format("The path to the output index directory. Default: %s", DEFAULT_INDEX_DIRECTORY))
+        options.addOption(Option.builder("o")
+                .longOpt(INDEX_PATH_OPTION)
+                .desc(String.format("The path to the output index directory. Default: %s", DEFAULT_INDEX_DIRECTORY))
                 .hasArg()
-                .create('o'));
+                .build());
 
-        options.addOption(OptionBuilder
-                .withLongOpt(REPLACE_INDEX_OPTION)
-                .withDescription("Replace an existing index if it exists. If this option is not specified,"
+        options.addOption(Option.builder("r")
+                .longOpt(REPLACE_INDEX_OPTION)
+                .desc("Replace an existing index if it exists. If this option is not specified,"
                         + "index processing will fail if an index already exists at the specified location.")
-                .create('r'));
+                .build());
 
         return options;
     }

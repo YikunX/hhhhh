@@ -31,18 +31,9 @@ package com.bericotech.clavin.gazetteer.query;
 import static com.bericotech.clavin.index.IndexField.*;
 import static org.apache.lucene.queryparser.classic.QueryParserBase.escape;
 
-import com.bericotech.clavin.ClavinException;
-import com.bericotech.clavin.extractor.LocationOccurrence;
-import com.bericotech.clavin.gazetteer.BasicGeoName;
-import com.bericotech.clavin.gazetteer.FeatureCode;
-import com.bericotech.clavin.gazetteer.GeoName;
-import com.bericotech.clavin.gazetteer.LazyAncestryGeoName;
-import com.bericotech.clavin.index.BinarySimilarity;
-import com.bericotech.clavin.index.IndexField;
-import com.bericotech.clavin.index.WhitespaceLowerCaseAnalyzer;
-import com.bericotech.clavin.resolver.ResolvedLocation;
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -53,29 +44,40 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queryparser.analyzing.AnalyzingQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.Filter;
+import org.apache.lucene.search.BooleanQuery.Builder;
+import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.QueryWrapperFilter;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.bericotech.clavin.ClavinException;
+import com.bericotech.clavin.extractor.LocationOccurrence;
+import com.bericotech.clavin.gazetteer.BasicGeoName;
+import com.bericotech.clavin.gazetteer.FeatureCode;
+import com.bericotech.clavin.gazetteer.GeoName;
+import com.bericotech.clavin.gazetteer.LazyAncestryGeoName;
+import com.bericotech.clavin.index.BinarySimilarity;
+import com.bericotech.clavin.index.IndexField;
+import com.bericotech.clavin.resolver.ResolvedLocation;
 
 /**
  * An implementation of Gazetteer that uses Lucene to rapidly search
@@ -90,7 +92,17 @@ public class LuceneGazetteer implements Gazetteer {
     /**
      * Index employs simple lower-casing & tokenizing on whitespace.
      */
-    private static final Analyzer INDEX_ANALYZER = new WhitespaceLowerCaseAnalyzer();
+    private static final Analyzer INDEX_ANALYZER;
+    static {
+    	Analyzer tmp = null;
+    	try {
+    		tmp = new StandardAnalyzer(Reader.nullReader());
+    	}
+    	catch (IOException e) {
+    		LOG.error("Failed to instantiate StandardAnalyzer for Lucene index");
+    	}
+    	INDEX_ANALYZER = tmp;
+    }
 
     /**
      * Custom Lucene sorting based on Lucene match score and the
@@ -99,7 +111,6 @@ public class LuceneGazetteer implements Gazetteer {
      */
     private static final Sort POPULATION_SORT = new Sort(new SortField[] {
         SortField.FIELD_SCORE,
-        // new SortField(POPULATION.key(), SortField.Type.LONG, true)
         new SortField(SORT_POP.key(), SortField.Type.LONG, true)
     });
 
@@ -137,19 +148,18 @@ public class LuceneGazetteer implements Gazetteer {
      */
     public LuceneGazetteer(final File indexDir) throws ClavinException {
         try {
-        // load the Lucene index directory from disk
-        index = FSDirectory.open(indexDir);
-
-        indexSearcher = new IndexSearcher(DirectoryReader.open(index));
-
-        // override default TF/IDF score to ignore multiple appearances
-        indexSearcher.setSimilarity(new BinarySimilarity());
-
-        // run an initial throw-away query just to "prime the pump" for
-        // the cache, so we can accurately measure performance speed
-        // per: http://wiki.apache.org/lucene-java/ImproveSearchingSpeed
-        indexSearcher.search(new AnalyzingQueryParser(Version.LUCENE_4_9, INDEX_NAME.key(),
-                INDEX_ANALYZER).parse("Reston"), null, DEFAULT_MAX_RESULTS, POPULATION_SORT);
+	        // load the Lucene index directory from disk
+	        index = FSDirectory.open(indexDir.toPath());
+	        indexSearcher = new IndexSearcher(DirectoryReader.open(index));
+	
+	        // override default TF/IDF score to ignore multiple appearances
+	        indexSearcher.setSimilarity(new BinarySimilarity());
+	
+	        // run an initial throw-away query just to "prime the pump" for
+	        // the cache, so we can accurately measure performance speed
+	        // per: http://wiki.apache.org/lucene-java/ImproveSearchingSpeed
+	        indexSearcher.search(new QueryParser(INDEX_NAME.key(), INDEX_ANALYZER).parse("Reston"),
+	        		DEFAULT_MAX_RESULTS, POPULATION_SORT, true);		// double check that last arg...
         } catch (ParseException pe) {
             throw new ClavinException("Error executing priming query.", pe);
         } catch (IOException ioe) {
@@ -166,23 +176,22 @@ public class LuceneGazetteer implements Gazetteer {
      * @throws ClavinException   if an error occurs
      */
     @Override
-    @SuppressWarnings("unchecked")
     public List<ResolvedLocation> getClosestLocations(final GazetteerQuery query) throws ClavinException {
         // sanitize the query input
         String sanitizedLocationName = sanitizeQueryText(query);
 
         // if there is no location to query, return no results
         if ("".equals(sanitizedLocationName)) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
-        LocationOccurrence location = query.getOccurrence();
+        LocationOccurrence location = query.getOccurrence();	//NOSONAR
         int maxResults = query.getMaxResults() > 0 ? query.getMaxResults() : DEFAULT_MAX_RESULTS;
-        Filter filter = buildFilter(query);
         List<ResolvedLocation> matches;
         try {
             // attempt to find an exact match for the query
-            matches = executeQuery(location, sanitizedLocationName, filter, maxResults, false, query.isFilterDupes(), query.getAncestryMode(), null);
+            matches = executeQuery(
+            		location, sanitizedLocationName, query, maxResults, false, null);
             if (LOG.isDebugEnabled()) {
                 for (ResolvedLocation loc : matches) {
                     LOG.debug("{}", loc);
@@ -192,7 +201,8 @@ public class LuceneGazetteer implements Gazetteer {
             if (query.getFuzzyMode().useFuzzyMatching(maxResults, matches.size())) {
                 // provide any exact matches if we are running a fuzzy query so they can be considered for deduplication
                 // and result count
-                matches = executeQuery(location, sanitizedLocationName, filter, maxResults, true, query.isFilterDupes(), query.getAncestryMode(), matches);
+                matches = executeQuery(
+                		location, sanitizedLocationName, query, maxResults, true, matches);
                 if (LOG.isDebugEnabled()) {
                     for (ResolvedLocation loc : matches) {
                         LOG.debug("{}[fuzzy]", loc);
@@ -215,11 +225,10 @@ public class LuceneGazetteer implements Gazetteer {
      * at most maxResults ResolvedLocations with ancestry resolved.
      * @param location the location occurrence
      * @param sanitizedName the sanitized name of the search location
+     * @param filterQuery base query for determining how to handle duplicates, ancestors, historical locations, and code restrictions 
      * @param filter the filter used to restrict the search results
      * @param maxResults the maximum number of results
      * @param fuzzy is this a fuzzy query
-     * @param dedupe should duplicate locations be filtered from the results
-     * @param ancestryMode the hierarchy resolution mode
      * @param previousResults the results of a previous query that should be used for duplicate filtering and appended to until
      *                        no additional matches are found or maxResults has been reached; the input list will not be modified
      *                        and may be <code>null</code>
@@ -227,19 +236,33 @@ public class LuceneGazetteer implements Gazetteer {
      * @throws ParseException if an error occurs generating the query
      * @throws IOException if an error occurs executing the query
      */
-    private List<ResolvedLocation> executeQuery(final LocationOccurrence location, final String sanitizedName, final Filter filter,
-            final int maxResults, final boolean fuzzy, final boolean dedupe, final AncestryMode ancestryMode,
+    private List<ResolvedLocation> executeQuery(final LocationOccurrence location, final String sanitizedName,
+    		GazetteerQuery filterQuery, final int maxResults, final boolean fuzzy,
             final List<ResolvedLocation> previousResults) throws ParseException, IOException {
-        Query query = new AnalyzingQueryParser(Version.LUCENE_4_9, INDEX_NAME.key(), INDEX_ANALYZER)
-                .parse(String.format(fuzzy ? FUZZY_FMT : EXACT_MATCH_FMT, sanitizedName));
+    	// combine filters with search term query
+    	QueryParser queryParser = new QueryParser(INDEX_NAME.key(), INDEX_ANALYZER);
+    	Query query = queryParser.parse(String.format(fuzzy ? FUZZY_FMT : EXACT_MATCH_FMT, sanitizedName));
+    	
+    	// fuzzy queries use a boolean rewrite that adds all unique fuzzy matches together
+    	// instead, only consider the best individual matching term in the document
+    	// i.e. search "Bstn~2" should score "Boston Basin" as though it had only one match, not two  
+    	if (query instanceof FuzzyQuery) {
+    		FuzzyQuery fuzzyQuery = (FuzzyQuery)query;
+    		fuzzyQuery.setRewriteMethod(new UniqueFuzzyScoringRewrite());
+    		fuzzyQuery.rewrite(indexSearcher.getIndexReader());
+    		query = fuzzyQuery;
+    	}
+    	
+    	Builder builder = buildFilters(filterQuery);
+    	builder.add(query, Occur.MUST);
+    	query = builder.build();
 
-        List<ResolvedLocation> matches = new ArrayList<ResolvedLocation>(maxResults);
-
-        Map<Integer, Set<GeoName>> parentMap = new HashMap<Integer, Set<GeoName>>();
+        List<ResolvedLocation> matches = new ArrayList<>(maxResults);
+        Map<Integer, Set<GeoName>> parentMap = new HashMap<>();
 
         // reuse GeoName instances so all ancestry is correctly resolved if multiple names for
         // the same GeoName match the query
-        Map<Integer, GeoName> geonameMap = new HashMap<Integer, GeoName>();
+        Map<Integer, GeoName> geonameMap = new HashMap<>();
         // if we are filling previous results, add them to the match list and the geoname map
         // so they can be used for deduplication or re-used if additional matches are found
         if (previousResults != null) {
@@ -249,7 +272,7 @@ public class LuceneGazetteer implements Gazetteer {
             }
         }
 
-        // short circuit if we were provided enough previous results to satisfy maxResults;
+        // short circuit if we were provided enough previous results to satisfy maxResults
         // we do this here because the query loop condition is evaluated after the query
         // is executed and results are processed to support de-duplication
         if (matches.size() >= maxResults) {
@@ -263,7 +286,8 @@ public class LuceneGazetteer implements Gazetteer {
             // collect all the hits up to maxResults, and sort them based
             // on Lucene match score and population for the associated
             // GeoNames record
-            TopDocs results = indexSearcher.searchAfter(lastDoc, query, filter, maxResults, POPULATION_SORT);
+        	//TopDocs results = indexSearcher.
+            TopDocs results = indexSearcher.searchAfter(lastDoc, query, maxResults, POPULATION_SORT, true);	// double check last arg
             // set lastDoc to null so we don't infinite loop if results is empty
             lastDoc = null;
             // populate results if matches were discovered
@@ -277,7 +301,7 @@ public class LuceneGazetteer implements Gazetteer {
                 if (geoname == null) {
                     geoname = BasicGeoName.parseFromGeoNamesRecord((String) GEONAME.getValue(doc), (String) PREFERRED_NAME.getValue(doc));
                     geonameMap.put(geonameID, geoname);
-                } else if (dedupe) {
+                } else if (filterQuery.isFilterDupes()) {
                     // if we have already seen this GeoName and we are removing duplicates, skip to the next doc
                     continue;
                 }
@@ -288,8 +312,8 @@ public class LuceneGazetteer implements Gazetteer {
                             parentIdField.numericValue().intValue() : null;
                     if (parentId != null) {
                         // if we are lazily or manually loading ancestry, replace GeoName with a LazyAncestryGeoName
-                        // otherwide, build the parent resolution map
-                        switch (ancestryMode) {
+                        // otherwise, build the parent resolution map
+                        switch (filterQuery.getAncestryMode()) {
                             case LAZY:
                                 geoname = new LazyAncestryGeoName(geoname, parentId, this);
                                 break;
@@ -297,11 +321,7 @@ public class LuceneGazetteer implements Gazetteer {
                                 geoname = new LazyAncestryGeoName(geoname, parentId);
                                 break;
                             case ON_CREATE:
-                                Set<GeoName> geos = parentMap.get(parentId);
-                                if (geos == null) {
-                                    geos = new HashSet<GeoName>();
-                                    parentMap.put(parentId, geos);
-                                }
+                                Set<GeoName> geos = parentMap.computeIfAbsent(parentId, k -> new HashSet<>());
                                 geos.add(geoname);
                                 break;
                         }
@@ -313,13 +333,14 @@ public class LuceneGazetteer implements Gazetteer {
                     break;
                 }
             }
-        } while (dedupe && lastDoc != null && matches.size() < maxResults);
+        } while (filterQuery.isFilterDupes() && lastDoc != null && matches.size() < maxResults);
         // if any results need ancestry resolution, resolve parents
         // this map should only contain GeoNames if ancestryMode == ON_CREATE
         if (!parentMap.isEmpty()) {
             resolveParents(parentMap);
         }
-
+        //Explanation explanation1 = indexSearcher.explain(query, 17254382);	// compare incorrect score
+        //Explanation explanation2 = indexSearcher.explain(query, 20381356);	// compare correct score
         return matches;
     }
 
@@ -346,46 +367,39 @@ public class LuceneGazetteer implements Gazetteer {
      * @return a Lucene search filter that will restrict the returned documents to the criteria provided or <code>null</code>
      *         if no filtering is necessary
      */
-    private Filter buildFilter(final GazetteerQuery params) {
-        List<Query> queryParts = new ArrayList<Query>();
+    private Builder buildFilters(final GazetteerQuery params) {
+        List<Query> queryParts = new ArrayList<>();
 
         // create the historical locations restriction if we are not including historical locations
         if (!params.isIncludeHistorical()) {
-            int val = IndexField.getBooleanIndexValue(false);
-            queryParts.add(NumericRangeQuery.newIntRange(HISTORICAL.key(), val, val, true, true));
+        	int val = IndexField.getBooleanIndexValue(false);
+        	queryParts.add(IntPoint.newExactQuery(HISTORICAL.key(), val));
         }
 
         // create the parent ID restrictions if we were provided at least one parent ID
         Set<Integer> parentIds = params.getParentIds();
         if (!parentIds.isEmpty()) {
-            BooleanQuery parentQuery = new BooleanQuery();
-            // locations must descend from at least one of the specified parents (OR)
-            for (Integer id : parentIds) {
-                parentQuery.add(NumericRangeQuery.newIntRange(ANCESTOR_IDS.key(), id, id, true, true), Occur.SHOULD);
-            }
-            queryParts.add(parentQuery);
+        	// locations must descend from at least one of the specified parents (OR)
+            queryParts.add(IntPoint.newSetQuery(ANCESTOR_IDS.key(), parentIds));
         }
 
         // create the feature code restrictions if we were provided some, but not all, feature codes
         Set<FeatureCode> codes = params.getFeatureCodes();
         if (!(codes.isEmpty() || ALL_CODES.equals(codes))) {
-            BooleanQuery codeQuery = new BooleanQuery();
+            Builder codeQuery = new BooleanQuery.Builder();
             // locations must be one of the specified feature codes (OR)
             for (FeatureCode code : codes) {
                 codeQuery.add(new TermQuery(new Term(FEATURE_CODE.key(), code.name())), Occur.SHOULD);
             }
-            queryParts.add(codeQuery);
+            queryParts.add(codeQuery.build());
         }
 
-        Filter filter = null;
-        if (!queryParts.isEmpty()) {
-            BooleanQuery bq = new BooleanQuery();
-            for (Query part : queryParts) {
-                bq.add(part, Occur.MUST);
-            }
-            filter = new QueryWrapperFilter(bq);
+        // combine all query parts
+        Builder builder = new BooleanQuery.Builder();
+        for (Query part : queryParts) {
+        	builder.add(part, Occur.MUST);
         }
-        return filter;
+        return builder;
     }
 
     /**
@@ -394,12 +408,12 @@ public class LuceneGazetteer implements Gazetteer {
      * @throws IOException if an error occurs during parent resolution
      */
     private void resolveParents(final Map<Integer, Set<GeoName>> childMap) throws IOException {
-        Map<Integer, GeoName> parentMap = new HashMap<Integer, GeoName>();
-        Map<Integer, Set<GeoName>> grandParentMap = new HashMap<Integer, Set<GeoName>>();
+        Map<Integer, GeoName> parentMap = new HashMap<>();
+        Map<Integer, Set<GeoName>> grandParentMap = new HashMap<>();
         for (Integer parentId : childMap.keySet()) {
             // Lucene query used to look for exact match on the "geonameID" field
-            Query q = NumericRangeQuery.newIntRange(GEONAME_ID.key(), parentId, parentId, true, true);
-            TopDocs results = indexSearcher.search(q, null, 1, POPULATION_SORT);
+            Query q = IntPoint.newExactQuery(GEONAME_ID.key(), parentId);
+            TopDocs results = indexSearcher.search(q, 1, POPULATION_SORT, true);		// another mystery bool
             if (results.scoreDocs.length > 0) {
                 Document doc = indexSearcher.doc(results.scoreDocs[0].doc);
                 GeoName parent = BasicGeoName.parseFromGeoNamesRecord(doc.get(GEONAME.key()), doc.get(PREFERRED_NAME.key()));
@@ -407,11 +421,7 @@ public class LuceneGazetteer implements Gazetteer {
                 if (!parent.isAncestryResolved()) {
                     Integer grandParentId = PARENT_ID.getValue(doc);
                     if (grandParentId != null) {
-                        Set<GeoName> geos = grandParentMap.get(grandParentId);
-                        if (geos == null) {
-                            geos = new HashSet<GeoName>();
-                            grandParentMap.put(grandParentId, geos);
-                        }
+                        Set<GeoName> geos = grandParentMap.computeIfAbsent(grandParentId, k -> new HashSet<>());
                         geos.add(parent);
                     }
                 }
@@ -450,7 +460,7 @@ public class LuceneGazetteer implements Gazetteer {
         try {
             GeoName geoName = null;
             // Lucene query used to look for exact match on the "geonameID" field
-            Query q = NumericRangeQuery.newIntRange(GEONAME_ID.key(), geonameId, geonameId, true, true);
+            Query q = IntPoint.newExactQuery(GEONAME_ID.key(), geonameId);
             // retrieve only one matching document
             TopDocs results = indexSearcher.search(q, 1);
             if (results.scoreDocs.length > 0) {
@@ -461,7 +471,7 @@ public class LuceneGazetteer implements Gazetteer {
                     if (parentId != null) {
                         switch (ancestryMode) {
                             case ON_CREATE:
-                                Map<Integer, Set<GeoName>> childMap = new HashMap<Integer, Set<GeoName>>();
+                                Map<Integer, Set<GeoName>> childMap = new HashMap<>();
                                 childMap.put(parentId, Collections.singleton(geoName));
                                 resolveParents(childMap);
                                 break;
@@ -480,7 +490,7 @@ public class LuceneGazetteer implements Gazetteer {
                 LOG.debug("No geoname found for ID: {}", geonameId);
             }
             return geoName;
-        } catch (IOException e) {
+        } catch (IOException e) {		// NOSONAR	
             String msg = String.format("Error retrieving geoname with ID : %d", geonameId);
             LOG.error(msg, e);
             throw new ClavinException(msg, e);
@@ -494,15 +504,11 @@ public class LuceneGazetteer implements Gazetteer {
 
     @Override
     public void loadAncestry(Collection<GeoName> geoNames) throws ClavinException {
-        Map<Integer, Set<GeoName>> parentMap = new HashMap<Integer, Set<GeoName>>();
+        Map<Integer, Set<GeoName>> parentMap = new HashMap<>();
         for (GeoName geoName : geoNames) {
             Integer parentId = geoName.getParentId();
             if (!geoName.isAncestryResolved() && parentId != null) {
-                Set<GeoName> geos = parentMap.get(parentId);
-                if (geos == null) {
-                    geos = new HashSet<GeoName>();
-                    parentMap.put(parentId, geos);
-                }
+                Set<GeoName> geos = parentMap.computeIfAbsent(parentId, k -> new HashSet<>());
                 geos.add(geoName);
             }
         }

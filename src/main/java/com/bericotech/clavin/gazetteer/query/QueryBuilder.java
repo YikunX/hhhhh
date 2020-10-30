@@ -82,6 +82,7 @@ public class QueryBuilder {
             FeatureCode.ADM4,
             FeatureCode.ADM4H,
             FeatureCode.ADM5,
+            FeatureCode.ADM5H,
             FeatureCode.ADMD,
             FeatureCode.ADMDH,
             FeatureCode.TERR,
@@ -94,6 +95,7 @@ public class QueryBuilder {
             FeatureCode.PPLA2,
             FeatureCode.PPLA3,
             FeatureCode.PPLA4,
+            FeatureCode.PPLA5,
             FeatureCode.PPLC,
             FeatureCode.PPLCH,
             FeatureCode.PPLF,
@@ -114,7 +116,7 @@ public class QueryBuilder {
     private AncestryMode ancestryMode = DEFAULT_HIERARCHY_MODE;
     private boolean includeHistorical = DEFAULT_INCLUDE_HISTORICAL;
     private boolean filterDupes = DEFAULT_FILTER_DUPES;
-    private Set<Integer> parentIds = new HashSet<Integer>();
+    private Set<Integer> parentIds = new HashSet<>();
     private Set<FeatureCode> featureCodes = EnumSet.noneOf(FeatureCode.class);
 
     /**
@@ -262,7 +264,7 @@ public class QueryBuilder {
      * @return this
      */
     public QueryBuilder parentIds(final Set<Integer> ids) {
-        parentIds = new HashSet<Integer>();
+        parentIds = new HashSet<>();
         if (ids != null) {
             parentIds.addAll(ids);
         }
@@ -342,7 +344,7 @@ public class QueryBuilder {
      * @return this
      */
     public QueryBuilder clearParentIds() {
-        parentIds = new HashSet<Integer>();
+        parentIds = new HashSet<>();
         return this;
     }
 

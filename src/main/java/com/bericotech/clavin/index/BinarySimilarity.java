@@ -1,6 +1,9 @@
 package com.bericotech.clavin.index;
 
-import org.apache.lucene.search.similarities.DefaultSimilarity;
+import org.apache.lucene.search.CollectionStatistics;
+import org.apache.lucene.search.Explanation;
+import org.apache.lucene.search.TermStatistics;
+import org.apache.lucene.search.similarities.ClassicSimilarity;
 
 /*#####################################################################
  * 
@@ -35,7 +38,7 @@ import org.apache.lucene.search.similarities.DefaultSimilarity;
  * calculating Lucene relevance score.
  * 
  */
-public class BinarySimilarity extends DefaultSimilarity {
+public class BinarySimilarity extends ClassicSimilarity {
     
     /**
      * Simple default constructor for {@link BinarySimilarity}.
@@ -58,4 +61,28 @@ public class BinarySimilarity extends DefaultSimilarity {
         else return 0.0f;
     }
 
+    
+    /**
+     * Does not penalize a term based on the number of documents it appears in.
+     * This may or may not be desirable behavior when matching strings to location
+     * names, but is absolutely essential when filtering by administrative type,
+     * otherwise more specific administrative types are less likely to be selected 
+     */
+    @Override
+    public float idf(long docFreq, long docCount) {
+      return 1.0f;
+    }
+    
+    
+    /**
+     * Make the query explanation string slightly more comrehensible.
+     * Doesn't fix the words for tf, sadly; that requires a bit more effort elsewhere.
+     */
+    @Override
+    public Explanation idfExplain(CollectionStatistics collectionStats, TermStatistics termStats) {
+      final long df = termStats.docFreq();
+      final long docCount = collectionStats.docCount();
+      final float idf = idf(df, docCount);
+      return Explanation.match(idf, "idf, always 1.0 for now");
+    }
 }
