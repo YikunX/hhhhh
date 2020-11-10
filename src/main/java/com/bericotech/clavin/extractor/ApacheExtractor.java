@@ -57,9 +57,9 @@ public class ApacheExtractor implements LocationExtractor {
     private SentenceDetectorME sentenceDetector;
     
     // resource files used by Apache OpenNLP Name Finder
-    private static final String pathToNERModel = "/en-ner-location.bin";
-    private static final String pathToTokenizerModel = "/en-token.bin";
-    private static final String pathToSentenceDetectorModel = "/en-sent.bin";
+    private static final String PATH_TO_NER_MODEL = "/en-ner-location.bin";
+    private static final String PATH_TO_TOKENIZER_MODEL = "/en-token.bin";
+    private static final String PATH_TO_SENTENCE_DETECTOR_MODEL = "/en-sent.bin";
 
     
     /**
@@ -69,9 +69,9 @@ public class ApacheExtractor implements LocationExtractor {
      * @throws IOException 
      */
     public ApacheExtractor() throws IOException {
-        nameFinder = new NameFinderME(new TokenNameFinderModel(ApacheExtractor.class.getResourceAsStream(pathToNERModel)));
-        tokenizer = new TokenizerME(new TokenizerModel(ApacheExtractor.class.getResourceAsStream(pathToTokenizerModel)));
-        sentenceDetector = new SentenceDetectorME(new SentenceModel(ApacheExtractor.class.getResourceAsStream(pathToSentenceDetectorModel)));
+        nameFinder = new NameFinderME(new TokenNameFinderModel(ApacheExtractor.class.getResourceAsStream(PATH_TO_NER_MODEL)));
+        tokenizer = new TokenizerME(new TokenizerModel(ApacheExtractor.class.getResourceAsStream(PATH_TO_TOKENIZER_MODEL)));
+        sentenceDetector = new SentenceDetectorME(new SentenceModel(ApacheExtractor.class.getResourceAsStream(PATH_TO_SENTENCE_DETECTOR_MODEL)));
     }
     
     /**
@@ -87,10 +87,10 @@ public class ApacheExtractor implements LocationExtractor {
             throw new IllegalArgumentException("plaintext input to extractLocationNames should not be null");
         }
 
-        List<LocationOccurrence> nerResults = new ArrayList<LocationOccurrence>();
+        List<LocationOccurrence> nerResults = new ArrayList<>();
 
         // The values used in these Spans are string character offsets
-        Span sentenceSpans[] = sentenceDetector.sentPosDetect(plainText);
+        Span[] sentenceSpans = sentenceDetector.sentPosDetect(plainText);
 
         // Each sentence gets processed on its own
         for (Span sentenceSpan : sentenceSpans) {
@@ -106,7 +106,7 @@ public class ApacheExtractor implements LocationExtractor {
 
             // find the location names in the tokenized text
             // the values used in these Spans are NOT string character offsets, they are indices into the 'tokens' array
-            Span names[] = nameFinder.find(tokens);
+            Span[] names = nameFinder.find(tokens);
 
 
             //for each name that got found, create our corresponding occurrence
