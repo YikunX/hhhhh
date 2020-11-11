@@ -1,13 +1,15 @@
-package com.bericotech.clavin.resolver.multipart;
+package com.novetta.clavin.resolver.multipart;
 
 
 
 import static org.junit.Assert.*;
 
-import com.bericotech.clavin.ClavinException;
-import com.bericotech.clavin.gazetteer.GeoName;
-import com.bericotech.clavin.gazetteer.query.LuceneGazetteer;
-import com.bericotech.clavin.resolver.ResolvedLocation;
+import com.novetta.clavin.ClavinException;
+import com.novetta.clavin.gazetteer.GeoName;
+import com.novetta.clavin.gazetteer.query.LuceneGazetteer;
+import com.novetta.clavin.resolver.ResolvedLocation;
+import com.novetta.clavin.resolver.multipart.MultipartLocationResolver;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;

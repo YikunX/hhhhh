@@ -26,7 +26,7 @@
  *
  *###################################################################*/
 
-package com.bericotech.clavin.gazetteer.query;
+package com.novetta.clavin.gazetteer.query;
 
 /**
  * This enum is used to indicate how and when to apply fuzzy matching

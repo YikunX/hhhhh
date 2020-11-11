@@ -26,15 +26,16 @@
  *
  *###################################################################*/
 
-package com.bericotech.clavin.gazetteer.query;
+package com.novetta.clavin.gazetteer.query;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import com.bericotech.clavin.ClavinException;
-import com.bericotech.clavin.extractor.LocationOccurrence;
-import com.bericotech.clavin.gazetteer.FeatureCode;
-import com.bericotech.clavin.gazetteer.GeoName;
-import com.bericotech.clavin.resolver.ResolvedLocation;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,11 +43,18 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import com.novetta.clavin.ClavinException;
+import com.novetta.clavin.extractor.LocationOccurrence;
+import com.novetta.clavin.gazetteer.FeatureCode;
+import com.novetta.clavin.gazetteer.GeoName;
+import com.novetta.clavin.resolver.ResolvedLocation;
+
 /**
- * Ensures non-heuristic matching and fuzzy matching features are working properly in {@link com.bericotech.clavin.gazetteer.query.LuceneGazetteer}.
+ * Ensures non-heuristic matching and fuzzy matching features are working properly in {@link com.novetta.clavin.gazetteer.query.LuceneGazetteer}.
  */
 public class LuceneGazetteerTest {
 

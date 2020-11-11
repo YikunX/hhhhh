@@ -26,7 +26,7 @@
  *
  *###################################################################*/
 
-package com.bericotech.clavin.gazetteer;
+package com.novetta.clavin.gazetteer;
 
 import java.util.Date;
 import java.util.List;
@@ -56,7 +56,7 @@ public interface GeoName {
 
     /**
      * Get the ancestry key that can be used to identify the direct administrative
-     * parent of this GeoName.  See {@link com.bericotech.clavin.gazetteer.GeoName#getAncestryKey()} for a description
+     * parent of this GeoName.  See {@link com.novetta.clavin.gazetteer.GeoName#getAncestryKey()} for a description
      * of an ancestry key.
      *
      * For example, the GeoName "Reston, VA" is found in
@@ -76,7 +76,7 @@ public interface GeoName {
      * </ul>
      *
      * Its parent ancestor key is "US.VA.059", which is the key returned by
-     * {@link com.bericotech.clavin.gazetteer.GeoName#getAncestryKey()} for the GeoName "Fairfax County."
+     * {@link com.novetta.clavin.gazetteer.GeoName#getAncestryKey()} for the GeoName "Fairfax County."
      *
      * @return the ancestry key of the direct administrative parent of this GeoName; will be
      *         <code>null</code> for top-level elements such as countries
@@ -86,13 +86,13 @@ public interface GeoName {
     /**
      * Get the ancestry key that can be used to identify this administrative division.
      * This method returns <code>null</code> for all feature types except the following
-     * {@link com.bericotech.clavin.gazetteer.FeatureClass#A} records:
+     * {@link com.novetta.clavin.gazetteer.FeatureClass#A} records:
      * <ul>
-     *   <li>Country ({@link com.bericotech.clavin.gazetteer.FeatureCode#PCL})</li>
-     *   <li>First Administrative Division ({@link com.bericotech.clavin.gazetteer.FeatureCode#ADM1})</li>
-     *   <li>Second Administrative Division ({@link com.bericotech.clavin.gazetteer.FeatureCode#ADM2})</li>
-     *   <li>Third Administrative Division ({@link com.bericotech.clavin.gazetteer.FeatureCode#ADM3})</li>
-     *   <li>Fourth Administrative Division ({@link com.bericotech.clavin.gazetteer.FeatureCode#ADM4})</li>
+     *   <li>Country ({@link com.novetta.clavin.gazetteer.FeatureCode#PCL})</li>
+     *   <li>First Administrative Division ({@link com.novetta.clavin.gazetteer.FeatureCode#ADM1})</li>
+     *   <li>Second Administrative Division ({@link com.novetta.clavin.gazetteer.FeatureCode#ADM2})</li>
+     *   <li>Third Administrative Division ({@link com.novetta.clavin.gazetteer.FeatureCode#ADM3})</li>
+     *   <li>Fourth Administrative Division ({@link com.novetta.clavin.gazetteer.FeatureCode#ADM4})</li>
      * </ul>
      *
      * The ancestry key includes the country and administrative division codes for all

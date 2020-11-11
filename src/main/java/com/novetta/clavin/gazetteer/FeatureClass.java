@@ -1,4 +1,4 @@
-package com.bericotech.clavin.gazetteer;
+package com.novetta.clavin.gazetteer;
 
 /*#####################################################################
  * 

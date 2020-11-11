@@ -26,12 +26,12 @@
  *
  *###################################################################*/
 
-package com.bericotech.clavin.resolver.multipart;
+package com.novetta.clavin.resolver.multipart;
 
-import com.bericotech.clavin.gazetteer.FeatureClass;
-import com.bericotech.clavin.gazetteer.FeatureCode;
-import com.bericotech.clavin.gazetteer.GeoName;
-import com.bericotech.clavin.gazetteer.query.QueryBuilder;
+import com.novetta.clavin.gazetteer.FeatureClass;
+import com.novetta.clavin.gazetteer.FeatureCode;
+import com.novetta.clavin.gazetteer.GeoName;
+import com.novetta.clavin.gazetteer.query.QueryBuilder;
 
 /**
  * A roll-up of feature classes and codes that assists in

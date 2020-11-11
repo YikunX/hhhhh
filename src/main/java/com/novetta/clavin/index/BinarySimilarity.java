@@ -1,4 +1,4 @@
-package com.bericotech.clavin.index;
+package com.novetta.clavin.index;
 
 import org.apache.lucene.search.CollectionStatistics;
 import org.apache.lucene.search.Explanation;

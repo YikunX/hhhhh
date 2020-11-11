@@ -26,9 +26,9 @@
  *
  *###################################################################*/
 
-package com.bericotech.clavin.resolver.multipart;
+package com.novetta.clavin.resolver.multipart;
 
-import com.bericotech.clavin.resolver.ResolvedLocation;
+import com.novetta.clavin.resolver.ResolvedLocation;
 
 /**
  * Convenience object used as output for {@link MultipartLocationResolver}

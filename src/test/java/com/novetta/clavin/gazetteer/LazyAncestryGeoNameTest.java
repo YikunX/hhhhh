@@ -26,17 +26,23 @@
  *
  *###################################################################*/
 
-package com.bericotech.clavin.gazetteer;
+package com.novetta.clavin.gazetteer;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import com.bericotech.clavin.gazetteer.query.AncestryMode;
-import com.bericotech.clavin.gazetteer.query.Gazetteer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import com.novetta.clavin.gazetteer.query.AncestryMode;
+import com.novetta.clavin.gazetteer.query.Gazetteer;
 
 /**
  * Tests to ensure ancestry is lazily resolved.

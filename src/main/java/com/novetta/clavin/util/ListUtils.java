@@ -1,4 +1,4 @@
-package com.bericotech.clavin.util;
+package com.novetta.clavin.util;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;

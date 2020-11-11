@@ -26,7 +26,7 @@
  *
  *###################################################################*/
 
-package com.bericotech.clavin.gazetteer.query;
+package com.novetta.clavin.gazetteer.query;
 
 /**
  * Controls the resolution of the hierarchy of political divisions

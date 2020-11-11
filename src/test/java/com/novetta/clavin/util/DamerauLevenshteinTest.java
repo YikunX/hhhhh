@@ -1,9 +1,11 @@
-package com.bericotech.clavin.util;
+package com.novetta.clavin.util;
 
-import static com.bericotech.clavin.util.DamerauLevenshtein.damerauLevenshteinDistance;
-import static com.bericotech.clavin.util.DamerauLevenshtein.damerauLevenshteinDistanceCaseInsensitive;
-import static com.bericotech.clavin.util.DamerauLevenshtein.isEditDistance1;
-import static org.junit.Assert.*;
+import static com.novetta.clavin.util.DamerauLevenshtein.damerauLevenshteinDistance;
+import static com.novetta.clavin.util.DamerauLevenshtein.damerauLevenshteinDistanceCaseInsensitive;
+import static com.novetta.clavin.util.DamerauLevenshtein.isEditDistance1;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigInteger;
 import java.util.Random;

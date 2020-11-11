@@ -1,20 +1,26 @@
-package com.bericotech.clavin.resolver;
+package com.novetta.clavin.resolver;
 
-import static com.bericotech.clavin.resolver.ClavinLocationResolver.isDemonym;
-import static org.junit.Assert.*;
+import static com.novetta.clavin.resolver.ClavinLocationResolver.isDemonym;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import com.bericotech.clavin.ClavinException;
-import com.bericotech.clavin.extractor.LocationOccurrence;
-import com.bericotech.clavin.gazetteer.GeoName;
-import com.bericotech.clavin.gazetteer.query.AncestryMode;
-import com.bericotech.clavin.gazetteer.query.LuceneGazetteer;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.novetta.clavin.ClavinException;
+import com.novetta.clavin.extractor.LocationOccurrence;
+import com.novetta.clavin.gazetteer.GeoName;
+import com.novetta.clavin.gazetteer.query.AncestryMode;
+import com.novetta.clavin.gazetteer.query.LuceneGazetteer;
 
 /*#####################################################################
  *

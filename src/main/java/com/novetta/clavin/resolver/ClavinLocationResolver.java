@@ -26,16 +26,16 @@
  *
  *###################################################################*/
 
-package com.bericotech.clavin.resolver;
+package com.novetta.clavin.resolver;
 
-import com.bericotech.clavin.ClavinException;
-import com.bericotech.clavin.extractor.LocationOccurrence;
-import com.bericotech.clavin.gazetteer.CountryCode;
-import com.bericotech.clavin.gazetteer.query.AncestryMode;
-import com.bericotech.clavin.gazetteer.query.FuzzyMode;
-import com.bericotech.clavin.gazetteer.query.Gazetteer;
-import com.bericotech.clavin.gazetteer.query.QueryBuilder;
-import com.bericotech.clavin.util.ListUtils;
+import com.novetta.clavin.ClavinException;
+import com.novetta.clavin.extractor.LocationOccurrence;
+import com.novetta.clavin.gazetteer.CountryCode;
+import com.novetta.clavin.gazetteer.query.AncestryMode;
+import com.novetta.clavin.gazetteer.query.FuzzyMode;
+import com.novetta.clavin.gazetteer.query.Gazetteer;
+import com.novetta.clavin.gazetteer.query.QueryBuilder;
+import com.novetta.clavin.util.ListUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -51,7 +51,7 @@ import java.util.Set;
  * Resolves location names into GeoName objects.
  *
  * Takes location names extracted from unstructured text documents by
- * {@link com.bericotech.clavin.extractor.LocationExtractor} and resolves them into the appropriate
+ * {@link com.novetta.clavin.extractor.LocationExtractor} and resolves them into the appropriate
  * geographic entities (as intended by the document's author based on
  * context) by finding the best match in a gazetteer.
  */
@@ -99,7 +99,7 @@ public class ClavinLocationResolver {
 
     /**
      * Resolves the supplied list of location names into
-     * {@link ResolvedLocation}s containing {@link com.bericotech.clavin.gazetteer.GeoName} objects
+     * {@link ResolvedLocation}s containing {@link com.novetta.clavin.gazetteer.GeoName} objects
      * using the defaults for maxHitDepth and maxContentWindow.
      *
      * Calls {@link Gazetteer#getClosestLocations} on
@@ -119,7 +119,7 @@ public class ClavinLocationResolver {
 
     /**
      * Resolves the supplied list of location names into
-     * {@link ResolvedLocation}s containing {@link com.bericotech.clavin.gazetteer.GeoName} objects.
+     * {@link ResolvedLocation}s containing {@link com.novetta.clavin.gazetteer.GeoName} objects.
      *
      * Calls {@link Gazetteer#getClosestLocations} on
      * each location name to find all possible matches, then uses
@@ -140,7 +140,7 @@ public class ClavinLocationResolver {
 
     /**
      * Resolves the supplied list of location names into
-     * {@link ResolvedLocation}s containing {@link com.bericotech.clavin.gazetteer.GeoName} objects.
+     * {@link ResolvedLocation}s containing {@link com.novetta.clavin.gazetteer.GeoName} objects.
      *
      * Calls {@link Gazetteer#getClosestLocations} on
      * each location name to find all possible matches, then uses

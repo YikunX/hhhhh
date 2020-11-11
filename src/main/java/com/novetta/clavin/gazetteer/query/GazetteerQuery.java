@@ -26,10 +26,10 @@
  *
  *###################################################################*/
 
-package com.bericotech.clavin.gazetteer.query;
+package com.novetta.clavin.gazetteer.query;
 
-import com.bericotech.clavin.extractor.LocationOccurrence;
-import com.bericotech.clavin.gazetteer.FeatureCode;
+import com.novetta.clavin.extractor.LocationOccurrence;
+import com.novetta.clavin.gazetteer.FeatureCode;
 
 import java.util.Collections;
 import java.util.EnumSet;

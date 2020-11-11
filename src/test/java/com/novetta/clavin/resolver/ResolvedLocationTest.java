@@ -1,11 +1,13 @@
-package com.bericotech.clavin.resolver;
+package com.novetta.clavin.resolver;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import com.bericotech.clavin.extractor.LocationOccurrence;
-import com.bericotech.clavin.gazetteer.BasicGeoName;
-import com.bericotech.clavin.gazetteer.GeoName;
 import org.junit.Test;
+
+import com.novetta.clavin.extractor.LocationOccurrence;
+import com.novetta.clavin.gazetteer.BasicGeoName;
+import com.novetta.clavin.gazetteer.GeoName;
 
 /*#####################################################################
  *
@@ -37,7 +39,7 @@ import org.junit.Test;
 
 /**
  * Basic tests for the {@link ResolvedLocation} class, which
- * encapsulates a {@link com.bericotech.clavin.gazetteer.GeoName} object representing the best match
+ * encapsulates a {@link com.novetta.clavin.gazetteer.GeoName} object representing the best match
  * between a given location name and gazetter record, along with some
  * information about the geographic entity resolution process.
  *

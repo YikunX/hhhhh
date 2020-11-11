@@ -26,7 +26,7 @@
  *
  *###################################################################*/
 
-package com.bericotech.clavin.resolver.multipart;
+package com.novetta.clavin.resolver.multipart;
 
 import java.util.List;
 

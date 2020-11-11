@@ -27,15 +27,16 @@
  *###################################################################*/
 
 
-package com.bericotech.clavin.resolver.multipart;
+package com.novetta.clavin.resolver.multipart;
 
-import static com.bericotech.clavin.util.DamerauLevenshtein.damerauLevenshteinDistanceCaseInsensitive;
+import static com.novetta.clavin.util.DamerauLevenshtein.damerauLevenshteinDistanceCaseInsensitive;
 
-import com.bericotech.clavin.resolver.multipart.MatchedLocation.Match;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+
+import com.novetta.clavin.resolver.multipart.MatchedLocation.Match;
 
 /**
  * The default scorer combines several weighted metrics to return a score

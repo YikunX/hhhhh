@@ -1,4 +1,4 @@
-package com.bericotech.clavin;
+package com.novetta.clavin;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.bericotech.clavin.resolver.ResolvedLocation;
+import com.novetta.clavin.resolver.ResolvedLocation;
 
 /*#####################################################################
  *

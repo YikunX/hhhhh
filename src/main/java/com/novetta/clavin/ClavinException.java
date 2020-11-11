@@ -26,7 +26,7 @@
  *
  *###################################################################*/
 
-package com.bericotech.clavin;
+package com.novetta.clavin;
 
 /**
  * A wrapper exception for errors occurring when resolving locations with CLAVIN.

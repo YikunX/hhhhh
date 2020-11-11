@@ -1,8 +1,9 @@
-package com.bericotech.clavin.gazetteer;
+package com.novetta.clavin.gazetteer;
 
-import com.bericotech.clavin.ClavinException;
-import com.bericotech.clavin.gazetteer.query.AncestryMode;
-import com.bericotech.clavin.gazetteer.query.Gazetteer;
+import com.novetta.clavin.ClavinException;
+import com.novetta.clavin.gazetteer.query.AncestryMode;
+import com.novetta.clavin.gazetteer.query.Gazetteer;
+
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;

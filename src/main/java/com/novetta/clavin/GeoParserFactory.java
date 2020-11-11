@@ -1,9 +1,10 @@
-package com.bericotech.clavin;
+package com.novetta.clavin;
 
-import com.bericotech.clavin.extractor.ApacheExtractor;
-import com.bericotech.clavin.extractor.LocationExtractor;
-import com.bericotech.clavin.gazetteer.query.Gazetteer;
-import com.bericotech.clavin.gazetteer.query.LuceneGazetteer;
+import com.novetta.clavin.extractor.ApacheExtractor;
+import com.novetta.clavin.extractor.LocationExtractor;
+import com.novetta.clavin.gazetteer.query.Gazetteer;
+import com.novetta.clavin.gazetteer.query.LuceneGazetteer;
+
 import java.io.File;
 import java.io.IOException;
 

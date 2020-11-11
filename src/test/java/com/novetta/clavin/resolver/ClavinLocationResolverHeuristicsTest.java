@@ -1,17 +1,19 @@
-package com.bericotech.clavin.resolver;
+package com.novetta.clavin.resolver;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.bericotech.clavin.ClavinException;
-import com.bericotech.clavin.extractor.LocationOccurrence;
-import com.bericotech.clavin.gazetteer.query.LuceneGazetteer;
 import java.io.File;
 import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.novetta.clavin.ClavinException;
+import com.novetta.clavin.extractor.LocationOccurrence;
+import com.novetta.clavin.gazetteer.query.LuceneGazetteer;
 
 
 /*#####################################################################

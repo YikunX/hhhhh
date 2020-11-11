@@ -26,7 +26,7 @@
  *
  *###################################################################*/
 
-package com.bericotech.clavin.index;
+package com.novetta.clavin.index;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexableField;

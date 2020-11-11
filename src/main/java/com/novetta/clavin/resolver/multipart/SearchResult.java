@@ -26,11 +26,12 @@
  *
  *###################################################################*/
 
-package com.bericotech.clavin.resolver.multipart;
+package com.novetta.clavin.resolver.multipart;
 
-import com.bericotech.clavin.resolver.ResolvedLocation;
 import java.util.List;
 import java.util.Set;
+
+import com.novetta.clavin.resolver.ResolvedLocation;
 
 /**
  *

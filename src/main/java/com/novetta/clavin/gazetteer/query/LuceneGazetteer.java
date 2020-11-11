@@ -26,9 +26,9 @@
  *
  *###################################################################*/
 
-package com.bericotech.clavin.gazetteer.query;
+package com.novetta.clavin.gazetteer.query;
 
-import static com.bericotech.clavin.index.IndexField.*;
+import static com.novetta.clavin.index.IndexField.*;
 import static org.apache.lucene.queryparser.classic.QueryParserBase.escape;
 
 import java.io.File;
@@ -69,15 +69,15 @@ import org.apache.lucene.store.FSDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bericotech.clavin.ClavinException;
-import com.bericotech.clavin.extractor.LocationOccurrence;
-import com.bericotech.clavin.gazetteer.BasicGeoName;
-import com.bericotech.clavin.gazetteer.FeatureCode;
-import com.bericotech.clavin.gazetteer.GeoName;
-import com.bericotech.clavin.gazetteer.LazyAncestryGeoName;
-import com.bericotech.clavin.index.BinarySimilarity;
-import com.bericotech.clavin.index.IndexField;
-import com.bericotech.clavin.resolver.ResolvedLocation;
+import com.novetta.clavin.ClavinException;
+import com.novetta.clavin.extractor.LocationOccurrence;
+import com.novetta.clavin.gazetteer.BasicGeoName;
+import com.novetta.clavin.gazetteer.FeatureCode;
+import com.novetta.clavin.gazetteer.GeoName;
+import com.novetta.clavin.gazetteer.LazyAncestryGeoName;
+import com.novetta.clavin.index.BinarySimilarity;
+import com.novetta.clavin.index.IndexField;
+import com.novetta.clavin.resolver.ResolvedLocation;
 
 /**
  * An implementation of Gazetteer that uses Lucene to rapidly search

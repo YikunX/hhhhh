@@ -1,13 +1,7 @@
-package com.bericotech.clavin.index;
+package com.novetta.clavin.index;
 
-import static com.bericotech.clavin.index.IndexField.*;
+import static com.novetta.clavin.index.IndexField.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-
-import com.bericotech.clavin.gazetteer.BasicGeoName;
-import com.bericotech.clavin.gazetteer.CountryCode;
-import com.bericotech.clavin.gazetteer.FeatureClass;
-import com.bericotech.clavin.gazetteer.FeatureCode;
-import com.bericotech.clavin.gazetteer.GeoName;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -53,6 +47,12 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.FSDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.novetta.clavin.gazetteer.BasicGeoName;
+import com.novetta.clavin.gazetteer.CountryCode;
+import com.novetta.clavin.gazetteer.FeatureClass;
+import com.novetta.clavin.gazetteer.FeatureCode;
+import com.novetta.clavin.gazetteer.GeoName;
 
 /*#####################################################################
  *

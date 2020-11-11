@@ -1,7 +1,8 @@
-package com.bericotech.clavin.resolver;
+package com.novetta.clavin.resolver;
 
-import com.bericotech.clavin.extractor.LocationOccurrence;
 import java.util.List;
+
+import com.novetta.clavin.extractor.LocationOccurrence;
 
 /*#####################################################################
  *
@@ -35,7 +36,7 @@ import java.util.List;
  * Resolves location names into GeoName objects.
  *
  * Takes location names extracted from unstructured text documents by
- * {@link com.bericotech.clavin.extractor.LocationExtractor} and resolves them into the appropriate
+ * {@link com.novetta.clavin.extractor.LocationExtractor} and resolves them into the appropriate
  * geographic entities (as intended by the document's author based on
  * context) by finding the best match in a gazetteer.
  *
@@ -45,7 +46,7 @@ import java.util.List;
 public interface LocationResolver {
     /**
      * Resolves the supplied list of location names into
-     * {@link ResolvedLocation}s containing {@link com.bericotech.clavin.gazetteer.GeoName} objects.
+     * {@link ResolvedLocation}s containing {@link com.novetta.clavin.gazetteer.GeoName} objects.
      *
      * @param locations     list of location names to be resolved
      * @param fuzzy         switch for turning on/off fuzzy matching

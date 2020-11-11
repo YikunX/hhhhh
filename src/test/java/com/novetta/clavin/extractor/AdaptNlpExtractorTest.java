@@ -1,4 +1,4 @@
-package com.bericotech.clavin.extractor;
+package com.novetta.clavin.extractor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.bericotech.clavin.util.TextUtils;
+import com.novetta.clavin.util.TextUtils;
 
 public class AdaptNlpExtractorTest {
 	/**

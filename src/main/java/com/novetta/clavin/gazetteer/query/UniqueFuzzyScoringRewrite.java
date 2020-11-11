@@ -1,4 +1,4 @@
-package com.bericotech.clavin.gazetteer.query;
+package com.novetta.clavin.gazetteer.query;
 
 import org.apache.lucene.search.TopTermsRewrite;
 

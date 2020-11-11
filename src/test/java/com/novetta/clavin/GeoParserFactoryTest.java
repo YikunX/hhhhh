@@ -1,4 +1,4 @@
-package com.bericotech.clavin;
+package com.novetta.clavin;
 
 import static org.junit.Assert.assertEquals;
 

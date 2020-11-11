@@ -1,9 +1,10 @@
-package com.bericotech.clavin;
+package com.novetta.clavin;
 
-import com.bericotech.clavin.gazetteer.BasicGeoNameTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+
+import com.novetta.clavin.gazetteer.BasicGeoNameTest;
 
 /*#####################################################################
  *
@@ -39,22 +40,22 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-    com.bericotech.clavin.GeoParserFactoryTest.class,
-    com.bericotech.clavin.extractor.ApacheExtractorTest.class,
-    com.bericotech.clavin.extractor.LocationOccurrenceTest.class,
+    com.novetta.clavin.GeoParserFactoryTest.class,
+    com.novetta.clavin.extractor.ApacheExtractorTest.class,
+    com.novetta.clavin.extractor.LocationOccurrenceTest.class,
     BasicGeoNameTest.class,
-    com.bericotech.clavin.index.BinarySimilarityTest.class,
-    com.bericotech.clavin.resolver.ResolvedLocationTest.class,
-    com.bericotech.clavin.resolver.ClavinLocationResolverTest.class,
-    com.bericotech.clavin.resolver.ClavinLocationResolverHeuristicsTest.class,
-    com.bericotech.clavin.resolver.multipart.MultipartLocationResolverTest.class,
-    com.bericotech.clavin.resolver.multipart.MultiLevelMultipartLocationResolverTest.class,
-    com.bericotech.clavin.util.DamerauLevenshteinTest.class,
-    com.bericotech.clavin.util.ListUtilsTest.class,
-    com.bericotech.clavin.util.TextUtilsTest.class,
-    com.bericotech.clavin.gazetteer.query.LuceneGazetteerTest.class,
+    com.novetta.clavin.index.BinarySimilarityTest.class,
+    com.novetta.clavin.resolver.ResolvedLocationTest.class,
+    com.novetta.clavin.resolver.ClavinLocationResolverTest.class,
+    com.novetta.clavin.resolver.ClavinLocationResolverHeuristicsTest.class,
+    com.novetta.clavin.resolver.multipart.MultipartLocationResolverTest.class,
+    com.novetta.clavin.resolver.multipart.MultiLevelMultipartLocationResolverTest.class,
+    com.novetta.clavin.util.DamerauLevenshteinTest.class,
+    com.novetta.clavin.util.ListUtilsTest.class,
+    com.novetta.clavin.util.TextUtilsTest.class,
+    com.novetta.clavin.gazetteer.query.LuceneGazetteerTest.class,
     // this one comes last as it's more of an integration test
-    com.bericotech.clavin.GeoParserTest.class
+    com.novetta.clavin.GeoParserTest.class
 })
 public class AllTestsSuite {
     // THIS CLASS INTENTIONALLY LEFT BLANK

@@ -1,4 +1,4 @@
-package com.bericotech.clavin.extractor;
+package com.novetta.clavin.extractor;
 
 /*#####################################################################
  *

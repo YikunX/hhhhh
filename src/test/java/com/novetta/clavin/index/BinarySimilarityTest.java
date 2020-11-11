@@ -1,4 +1,4 @@
-package com.bericotech.clavin.index;
+package com.novetta.clavin.index;
 
 import static org.junit.Assert.*;
 

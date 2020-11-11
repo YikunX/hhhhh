@@ -1,11 +1,12 @@
-package com.bericotech.clavin;
+package com.novetta.clavin;
 
-import com.bericotech.clavin.extractor.LocationExtractor;
-import com.bericotech.clavin.extractor.LocationOccurrence;
-import com.bericotech.clavin.gazetteer.query.AncestryMode;
-import com.bericotech.clavin.gazetteer.query.Gazetteer;
-import com.bericotech.clavin.resolver.ClavinLocationResolver;
-import com.bericotech.clavin.resolver.ResolvedLocation;
+import com.novetta.clavin.extractor.LocationExtractor;
+import com.novetta.clavin.extractor.LocationOccurrence;
+import com.novetta.clavin.gazetteer.query.AncestryMode;
+import com.novetta.clavin.gazetteer.query.Gazetteer;
+import com.novetta.clavin.resolver.ClavinLocationResolver;
+import com.novetta.clavin.resolver.ResolvedLocation;
+
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

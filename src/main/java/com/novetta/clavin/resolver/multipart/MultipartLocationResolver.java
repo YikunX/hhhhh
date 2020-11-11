@@ -26,16 +26,17 @@
  *
  *###################################################################*/
 
-package com.bericotech.clavin.resolver.multipart;
+package com.novetta.clavin.resolver.multipart;
 
-import com.bericotech.clavin.ClavinException;
-import com.bericotech.clavin.gazetteer.CountryCode;
-import com.bericotech.clavin.gazetteer.query.AncestryMode;
-import com.bericotech.clavin.gazetteer.query.FuzzyMode;
-import com.bericotech.clavin.gazetteer.query.Gazetteer;
-import com.bericotech.clavin.gazetteer.GeoName;
-import com.bericotech.clavin.gazetteer.query.QueryBuilder;
-import com.bericotech.clavin.resolver.ResolvedLocation;
+import com.novetta.clavin.ClavinException;
+import com.novetta.clavin.gazetteer.CountryCode;
+import com.novetta.clavin.gazetteer.GeoName;
+import com.novetta.clavin.gazetteer.query.AncestryMode;
+import com.novetta.clavin.gazetteer.query.FuzzyMode;
+import com.novetta.clavin.gazetteer.query.Gazetteer;
+import com.novetta.clavin.gazetteer.query.QueryBuilder;
+import com.novetta.clavin.resolver.ResolvedLocation;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -88,7 +89,7 @@ public class MultipartLocationResolver {
      * Resolves a multipart location name, such as what's often found
      * in structured data like a spreadsheet or database table (e.g.,
      * [Reston][Virginia][United States]), into a {@link ResolvedMultipartLocation}
-     * containing {@link com.bericotech.clavin.gazetteer.GeoName} objects.
+     * containing {@link com.novetta.clavin.gazetteer.GeoName} objects.
      *
      * @param location           multipart location name to be resolved
      * @param fuzzy              switch for turning on/off fuzzy matching

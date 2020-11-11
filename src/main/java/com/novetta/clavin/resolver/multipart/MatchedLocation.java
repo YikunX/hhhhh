@@ -26,10 +26,11 @@
  *
  *###################################################################*/
 
-package com.bericotech.clavin.resolver.multipart;
+package com.novetta.clavin.resolver.multipart;
 
-import com.bericotech.clavin.gazetteer.GeoName;
-import com.bericotech.clavin.resolver.ResolvedLocation;
+import com.novetta.clavin.gazetteer.GeoName;
+import com.novetta.clavin.resolver.ResolvedLocation;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;

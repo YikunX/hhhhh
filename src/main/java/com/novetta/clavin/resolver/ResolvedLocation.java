@@ -1,9 +1,9 @@
-package com.bericotech.clavin.resolver;
+package com.novetta.clavin.resolver;
 
-import static com.bericotech.clavin.util.DamerauLevenshtein.damerauLevenshteinDistanceCaseInsensitive;
+import static com.novetta.clavin.util.DamerauLevenshtein.damerauLevenshteinDistanceCaseInsensitive;
 
-import com.bericotech.clavin.extractor.LocationOccurrence;
-import com.bericotech.clavin.gazetteer.GeoName;
+import com.novetta.clavin.extractor.LocationOccurrence;
+import com.novetta.clavin.gazetteer.GeoName;
 
 /*#####################################################################
  *
@@ -37,7 +37,7 @@ import com.bericotech.clavin.gazetteer.GeoName;
  * Object produced by resolving a location name against gazetteer
  * records.
  *
- * Encapsulates a {@link com.bericotech.clavin.gazetteer.GeoName} object representing the best match
+ * Encapsulates a {@link com.novetta.clavin.gazetteer.GeoName} object representing the best match
  * between a given location name and gazetter record, along with some
  * information about the geographic entity resolution process.
  *

@@ -1,10 +1,10 @@
-package com.bericotech.clavin;
+package com.novetta.clavin;
 
 import java.io.File;
 import java.util.List;
 
-import com.bericotech.clavin.resolver.ResolvedLocation;
-import com.bericotech.clavin.util.TextUtils;
+import com.novetta.clavin.resolver.ResolvedLocation;
+import com.novetta.clavin.util.TextUtils;
 
 /*#####################################################################
  * 
