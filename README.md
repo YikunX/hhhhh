@@ -1,4 +1,4 @@
-![CLAVIN](https://github.com/Novetta/CLAVIN/blob/develop/clavinLogo.png?raw=true)
+![CLAVIN](https://github.com/Novetta/CLAVIN/blob/develop/img/clavinLogo.png?raw=true)
 
 
 
