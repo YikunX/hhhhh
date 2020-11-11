@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.novetta.clavin.util.TextUtils;
@@ -18,8 +19,10 @@ public class AdaptNlpExtractorTest {
 	 * Exact same unit test as the one in ApacheExtractorTest but using AdaptNlpExtractor instead.
 	 * At the level this kind of unit test is concerned about, behavior should be the same.
 	 * Obviously that would not be the case if things like accuracy were being considered.
+	 * This test requires a local instance of AdaptNLP to be running, so ignore it
 	 * @throws IOException
 	 */
+	@Ignore
 	@Test
 	public void testExtractLocationNames() throws IOException {
 		// instantiate the extractor
