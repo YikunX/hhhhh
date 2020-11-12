@@ -23,5 +23,5 @@ jobs:
         unzip allCountries.zip 
         mvn -B compile 
         MAVEN_OPTS="-Xmx4g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.index.IndexDirectoryBuilder" 
-        mvn clean package
+        mvn -B clean package
 
