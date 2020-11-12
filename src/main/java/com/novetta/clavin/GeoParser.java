@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  * unstructured text and resolves them against a gazetteer to produce
  * structured geo data.
  *
- * Main API entry point for CLAVIN -- simply instantiate this class and
+ * Main API entry point for CLAVIN; simply instantiate this class and
  * call the {@link GeoParser#parse} method on your text string.
  *
  */
@@ -92,7 +92,7 @@ public class GeoParser {
      *
      * @param inputText     unstructured text to be processed
      * @return              list of geo entities resolved from text
-     * @throws Exception
+     * @throws Exception	throws exception on parsing input text
      */
     public List<ResolvedLocation> parse(String inputText) throws Exception {
         return parse(inputText, ClavinLocationResolver.DEFAULT_ANCESTRY_MODE);
@@ -107,7 +107,7 @@ public class GeoParser {
      * @param inputText     unstructured text to be processed
      * @param ancestryMode  the ancestry load mode
      * @return              list of geo entities resolved from text
-     * @throws Exception
+     * @throws Exception	throws exception on parsing input text
      */
     public List<ResolvedLocation> parse(String inputText, AncestryMode ancestryMode) throws Exception {
 

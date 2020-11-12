@@ -30,8 +30,8 @@ package com.novetta.clavin.gazetteer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.novetta.clavin.gazetteer.query.AncestryMode;
 import com.novetta.clavin.gazetteer.query.Gazetteer;
@@ -47,7 +47,7 @@ import com.novetta.clavin.gazetteer.query.Gazetteer;
 /**
  * Tests to ensure ancestry is lazily resolved.
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class) 
 public class LazyAncestryGeoNameTest {
     private static final int TEST_PARENT_ID = 42;
 

@@ -89,7 +89,7 @@ public class ResolvedMultipartLocation {
 
     /**
      * For pretty-printing.
-     * @return  "(<city>, <state>, <country>)"
+     * @return  a city, state, country string
      */
     @Override
     public String toString() {

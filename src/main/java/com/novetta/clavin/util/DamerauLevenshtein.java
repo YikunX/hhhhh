@@ -49,7 +49,7 @@ public class DamerauLevenshtein {
      * Computes the true Damerau–Levenshtein edit distance
      * (with adjacent transpositions) between two given strings.<br><br>
      * 
-     * Based on <a href="http://en.wikipedia.org/wiki/Damerau–Levenshtein_distance">C# code from Wikipedia</a>.
+     * Based on <a href="http%3A%2F%2Fen.wikipedia.org%2Fwiki%2FDamerau%E2%80%93Levenshtein_distance">C# code from Wikipedia</a>.
      * 
      * @param str1  First string being compared
      * @param str2  Second string being compared
@@ -138,7 +138,7 @@ public class DamerauLevenshtein {
      * 
      * @param str1  First string being compared
      * @param str2  Second string being compared
-     * @return      True if DL edit distance < 2, false otherwise
+     * @return      True if DL edit distance is less than 2, false otherwise
      */
     public static boolean isEditDistance1(String str1, String str2) {
         // one or both strings is empty or null

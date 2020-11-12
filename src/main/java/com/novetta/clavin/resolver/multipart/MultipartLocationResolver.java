@@ -57,7 +57,7 @@ import org.slf4j.LoggerFactory;
  * like a spreadsheet or database table (e.g., [Reston][Virginia][United States]),
  * and resolves them into the appropriate geographic entities by identifying the
  * most logical match in a gazetteer, trying to enforce some kind of notional
- * hierarchy of place names (e.g., city --> state/province/etc. --> country).
+ * hierarchy of place names (e.g., city to state/province/etc. to country).
  */
 public class MultipartLocationResolver {
     /**
