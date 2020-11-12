@@ -10,38 +10,54 @@ How to build & use CLAVIN:
 --------------------------
 
 1. Check out a copy of the source code:
-	
-	git clone https://github.com/Novetta/CLAVIN.git
+
+```
+git clone https://github.com/Novetta/CLAVIN.git
+```
 
 2. Move into the newly-created CLAVIN directory:
-	
-	cd CLAVIN
+
+```	
+cd CLAVIN
+```
 
 3. Download the latest version of allCountries.zip gazetteer file from GeoNames.org:
-	
-	curl -O http://download.geonames.org/export/dump/allCountries.zip
+
+```
+curl -O http://download.geonames.org/export/dump/allCountries.zip
+```
 
 4. Unzip the GeoNames gazetteer file:
 
-	unzip allCountries.zip
+```
+unzip allCountries.zip
+```
 
 5. Compile the source code:
-	
-	mvn compile
+
+```
+mvn compile
+```
 
 6. Create the Lucene Index (this one-time process will take several minutes):
-	
-	MAVEN_OPTS="-Xmx4g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.index.IndexDirectoryBuilder"
+
+```
+MAVEN_OPTS="-Xmx4g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.index.IndexDirectoryBuilder"
+```
 
 7. Run the example program:
 
-	MAVEN_OPTS="-Xmx2g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.WorkflowDemo"`
+```
+MAVEN_OPTS="-Xmx2g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.WorkflowDemo"`
+```
 	
 If you encounter an error that looks like this:
 
-	... InvocationTargetException: Java heap space ...`
+```
+... InvocationTargetException: Java heap space ...
+```
 	
-set the appropriate environmental variable controlling Maven's memory usage, and increase the size with `export MAVEN_OPTS=-Xmx4g` or similar.
+Set the appropriate environmental variable controlling Maven's memory usage, and increase the size with `export MAVEN_OPTS=-Xmx4g` or similar.
 
 Once that all runs successfully, feel free to modify the CLAVIN source code to suit your needs.
 
