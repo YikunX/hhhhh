@@ -23,7 +23,7 @@ jobs:
       run: | 
         curl -O http://download.geonames.org/export/dump/allCountries.zip 
         unzip allCountries.zip 
-        mvn compile 
+        mvn -B compile 
         MAVEN_OPTS="-Xmx4g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.index.IndexDirectoryBuilder" 
-        mvn clean package
+        mvn -B clean package
 
