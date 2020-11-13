@@ -48,7 +48,7 @@ MAVEN_OPTS="-Xmx4g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.index.Ind
 7. Run the example program:
 
 ```
-MAVEN_OPTS="-Xmx2g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.WorkflowDemo"`
+MAVEN_OPTS="-Xmx2g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.WorkflowDemo"
 ```
 	
 If you encounter an error that looks like this:
