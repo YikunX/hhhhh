@@ -85,7 +85,7 @@ When using this library, you're now able to choose between two different extract
 
 **AdaptNLP**
 
-Creating an AdaptNLP: 
+Creating an AdaptNlpExtractor: 
 
 ```
 LocationExtractor extractor = new AdaptNlpExtractor();
