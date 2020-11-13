@@ -119,6 +119,14 @@ public class IndexDirectoryBuilder {
         this.fullAncestry = fullAncestryIn;
     }
 
+    /*
+     * Builds the index using a gazetteer.
+     * 
+     * @param indexDir     		index directory location
+     * @param gazetteerFiles	list of gazetteer files to process
+     * @param altNamesFile		alternate names file to adjust gazetteer entries
+     * @throws IOException		throws exception when building index
+     */
     public void buildIndex(final File indexDir, final List<File> gazetteerFiles, final File altNamesFile) throws IOException {
         LOG.info("Indexing... please wait.");
 
@@ -515,7 +523,7 @@ public class IndexDirectoryBuilder {
      * some supplementary gazetteer records at the end.
      *
      * @param args              not used
-     * @throws IOException
+     * @throws IOException		throws exception on error when building index
      */
     public static void main(String[] args) throws IOException {
         Options options = getOptions();

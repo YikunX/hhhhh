@@ -47,7 +47,6 @@ public class TextUtils {
      * 
      * @param file          File to be string-ified
      * @return              String representing contents of file
-     * @throws IOException
      */
     public static String fileToString(File file) throws IOException {
         return IOUtils.toString(new BufferedReader(new FileReader(file)));

@@ -44,7 +44,8 @@ public class AdaptNlpExtractor implements LocationExtractor {
 	
 	/**
 	 *  Default with connection to locally hosted AdaptNLP
-	 * @throws IOException 
+	 *  
+     * @throws IOException	throws exception on error processing text
 	 */
 	public AdaptNlpExtractor() throws IOException {
 		host = "http://localhost";

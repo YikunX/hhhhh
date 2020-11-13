@@ -2,6 +2,8 @@ package com.novetta.clavin.index;
 
 import org.apache.lucene.analysis.Analyzer;
 
+import com.novetta.clavin.resolver.ResolvedLocation;
+
 /*#####################################################################
  * 
  * CLAVIN (Cartographic Location And Vicinity INdexer)
@@ -50,7 +52,7 @@ public class WhitespaceLowerCaseAnalyzer extends Analyzer {
      * Provides tokenizer access for the analyzer.
      * 
      * @param fieldName     field to be tokenized
-     * @param reader
+     * @return              returns {@link org.apache.lucene.analysis.Analyzer.TokenStreamComponents}
      */
     protected TokenStreamComponents createComponents(String fieldName) {
         return new TokenStreamComponents(new WhitespaceLowerCaseTokenizer());

@@ -73,9 +73,9 @@ public class LuceneLocationResolver implements LocationResolver {
      * @param indexDir              Lucene index directory to be loaded
      * @param maxHitDepth           number of candidate matches to consider
      * @param maxContextWindow      how much context to consider when resolving
-     * @throws IOException
-     * @throws ParseException
      * @deprecated 2.0.0 Use {@link ClavinLocationResolver}
+     * @throws IOException			exception in resolving locations
+     * @throws ParseException		exception in parsing terms 
      */
     @Deprecated
     public LuceneLocationResolver(File indexDir, int maxHitDepth, int maxContextWindow) throws IOException, ParseException {
@@ -106,8 +106,6 @@ public class LuceneLocationResolver implements LocationResolver {
      * @param locations         list of location names to be resolved
      * @param fuzzy             switch for turning on/off fuzzy matching
      * @return                  list of {@link ResolvedLocation} objects
-     * @throws ParseException
-     * @throws IOException
      * @deprecated 2.0.0 Use {@link ClavinLocationResolver#resolveLocations(java.util.List, boolean)} or
      *             {@link ClavinLocationResolver#resolveLocations(java.util.List, int, int, boolean)}
      **/

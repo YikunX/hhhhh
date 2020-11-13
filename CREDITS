@@ -1,7 +1,7 @@
 CLAVIN (Cartographic Location And Vicinity INdexer)
 
-Copyright (C) 2012-2013 Berico Technologies
-http://clavin.bericotechnologies.com
+Copyright (C) 2012-2020 Novetta
+https://opensource.novetta.com
 
 ====================================================================
 
@@ -19,32 +19,36 @@ permissions and limitations under the License.
 
 ====================================================================
 
+Novetta purchased Berico Technologies, where CLAVIN was originally created. 
+
+The technical lead for CLAVIN is:
+	Kainoa Eastlack
+	Software Engineer, Novetta
+	keastlack@novetta.com
+
 The creator and product owner emeritus of CLAVIN is:
-	Charlie Greenbacker
+	Charlie Greenbacker 
 	http://greenbacker.net
 	greenbacker@gmail.com
 
-The technical lead for CLAVIN is:
-	Travis Pinney
-	Senior Software Engineer, Berico Technologies
-	tpinney@bericotechnologies.com
-
 Other contributors include:
-	(Berico Technologies unless otherwise indicated)
-	Travis Camechis
-	Richard Clayton
+	Jeremy Glesner (Novetta)
+	Steve Vaughan (Berico Technologies)
+	Travis Pinney (Berico Technologies)
+	Travis Camechis (Berico Technologies)
+	Richard Clayton (Berico Technologies)
 	Catherine D'Ignazio (MIT Center for Civic Media)
-	Chuck Dudley
-	Shane Ebersole
+	Chuck Dudley (Berico Technologies)
+	Shane Ebersole (Berico Technologies)
 	Sean Lavelle (Thetus Corporation)
-	Minh Nguyen
-	Kirill Orlov
+	Minh Nguyen (Berico Technologies)
+	Kirill Orlov (Berico Technologies)
 	Andrew Pennebaker (YelloSoft)
 	Kelly Plummer (RadiantBlue Technologies)
 	Gordon Shankman (Altamira Technologies Corporation)
-	Jason Tibbetts
+	Jason Tibbetts (Berico Technologies)
 	Noah Veltman (http://noahveltman.com/)
-	Matt Woytowitz
+	Matt Woytowitz (Berico Technologies)
 
 ====================================================================
 

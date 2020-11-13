@@ -41,11 +41,11 @@ import com.novetta.clavin.util.TextUtils;
 public class WorkflowDemo {
 
     /**
-     * Run this after installing & configuring CLAVIN to get a sense of
+     * Run this after installing and configuring CLAVIN to get a sense of
      * how to use it.
      * 
-     * @param args              not used
-     * @throws Exception
+     * @param args          not used
+     * @throws Exception	throws exception on error processing text
      */
     public static void main(String[] args) throws Exception {
         

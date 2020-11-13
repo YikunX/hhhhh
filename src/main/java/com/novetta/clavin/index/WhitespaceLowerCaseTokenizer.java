@@ -53,6 +53,7 @@ public class WhitespaceLowerCaseTokenizer extends CharTokenizer {
      * {@link Character#isWhitespace(int)}.
      * 
      * @param c     char being processed
+     * @return		boolean as to whether whitespace is detected
      */
     @Override
     protected boolean isTokenChar(int c) {
@@ -63,6 +64,7 @@ public class WhitespaceLowerCaseTokenizer extends CharTokenizer {
      * {@link Character#toLowerCase(int)}.
      * 
      * @param c     char being processed
+     * @return		int char to lowercase
      */
     protected int normalize(int c) {
         return Character.toLowerCase(c);

@@ -66,7 +66,7 @@ public class ApacheExtractor implements LocationExtractor {
      * Builds an {@link ApacheExtractor} by instantiating the OpenNLP
      * Name Finder and Tokenizer.
      * 
-     * @throws IOException 
+     * @throws IOException		throws exception when instantiating OpenNLP extractor
      */
     public ApacheExtractor() throws IOException {
         nameFinder = new NameFinderME(new TokenNameFinderModel(ApacheExtractor.class.getResourceAsStream(PATH_TO_NER_MODEL)));

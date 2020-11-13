@@ -51,8 +51,8 @@ public interface LocationResolver {
      * @param locations     list of location names to be resolved
      * @param fuzzy         switch for turning on/off fuzzy matching
      * @return              list of {@link ResolvedLocation} objects
-     * @throws Exception    if an error occurs
      * @deprecated 2.0.0 Use {@link ClavinLocationResolver#resolveLocations(java.util.List, int, int, boolean)}
+     * @throws Exception	exception in resolving locations
      **/
     @Deprecated
     public List<ResolvedLocation> resolveLocations(
