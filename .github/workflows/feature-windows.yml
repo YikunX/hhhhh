@@ -20,11 +20,11 @@ jobs:
       with: 
         java-version: 1.14 
     - name: Build with Maven 
+      mavenOpts: -Xmx4g
       run: | 
         curl -O http://download.geonames.org/export/dump/allCountries.zip 
         unzip allCountries.zip 
         mvn -B compile 
-        set MAVEN_OPTS=-Xmx4g
         mvn exec:java '-Dexec.mainClass="com.novetta.clavin.index.IndexDirectoryBuilder"'
         mvn -B clean package
 
