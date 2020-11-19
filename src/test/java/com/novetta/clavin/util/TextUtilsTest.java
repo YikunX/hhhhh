@@ -53,7 +53,7 @@ public class TextUtilsTest {
         
     	File inputFile = new File("src/test/resources/sample-docs/SampleText.txt");
     	String fileString = TextUtils.fileToString(inputFile);
-        fileString.replaceAll("\\n|\\r\\n", System.getProperty("line.separator"));
+    	fileString.replaceAll("\\n|\\r\\n|\\n\\r|\\r", System.lineSeparator());
         
         String expectedString = "Line1 word2\nLine2 word2 word3\nLine3";
         expectedString.replaceAll("\\n|\\r\\n|\\n\\r|\\r", System.lineSeparator());
