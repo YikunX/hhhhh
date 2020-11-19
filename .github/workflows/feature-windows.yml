@@ -24,6 +24,6 @@ jobs:
         curl -O http://download.geonames.org/export/dump/allCountries.zip 
         unzip allCountries.zip 
         mvn -B compile 
-        MAVEN_OPTS="-Xmx4g" mvn exec:java '-Dexec.mainClass="com.novetta.clavin.index.IndexDirectoryBuilder"'
+        'MAVEN_OPTS="-Xmx4g"' mvn exec:java '-Dexec.mainClass="com.novetta.clavin.index.IndexDirectoryBuilder"'
         mvn -B clean package
 
