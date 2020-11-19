@@ -50,9 +50,14 @@ public class TextUtilsTest {
     @Test
     public void testFileToString() throws IOException {
         // TODO: fix this test so it works with Windows newline chars
-        File inputFile = new File("src/test/resources/sample-docs/SampleText.txt");
+        
+    	File inputFile = new File("src/test/resources/sample-docs/SampleText.txt");
+    	String fileString = TextUtils.fileToString(inputFile);
+        fileString.replaceAll("\\n|\\r\\n", System.getProperty("line.separator"));
+        
         String expectedString = "Line1 word2\nLine2 word2 word3\nLine3";
-        String fileString = TextUtils.fileToString(inputFile);
+        expectedString.replaceAll("\\n|\\r\\n", System.getProperty("line.separator"));
+       
         assertEquals("wrong output from fileToString", expectedString, fileString);
     }
 
