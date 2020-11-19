@@ -56,7 +56,7 @@ public class TextUtilsTest {
         fileString.replaceAll("\\n|\\r\\n", System.getProperty("line.separator"));
         
         String expectedString = "Line1 word2\nLine2 word2 word3\nLine3";
-        expectedString.replaceAll("\\n|\\r\\n", System.getProperty("line.separator"));
+        expectedString.replaceAll("\\n|\\r\\n|\\n\\r", System.getProperty("line.separator"));
        
         assertEquals("wrong output from fileToString", expectedString, fileString);
     }
