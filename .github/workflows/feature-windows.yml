@@ -20,7 +20,8 @@ jobs:
       with: 
         java-version: 1.14 
     - name: Build with Maven 
-      mavenOpts: -Xmx4g
+      env:
+        MAVEN_OPTS: -Xmx4g
       run: | 
         curl -O http://download.geonames.org/export/dump/allCountries.zip 
         unzip allCountries.zip 
