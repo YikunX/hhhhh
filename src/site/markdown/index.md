@@ -2,7 +2,7 @@
 
 ### Description
 
-<img src="images/clavin_logo.png" style="float:right; height: 14em; margin: 25px" />
+<img src="images/clavinLogo.png" style="float:right; height: 14em; margin: 25px" />
 
 CLAVIN (Cartographic Location And Vicinity INdexer) is an award-winning open source software package for document geotagging and geoparsing that employs context-based geographic entity resolution.
 
@@ -22,9 +22,11 @@ CLAVIN was deployed into production at the customer site in the summer of 2012, 
 
 CLAVIN is named in honor of a lovable, know-it-all postal worker from a famous 1980s sitcom. CLAVIN is also a **backronym**, "a phrase specially constructed so that an acronym fits an existing word" [Wikipedia ~ Backronym](http://en.wikipedia.org/wiki/Backronym). As a bonus, the name gave us an excuse to use a postmark with a mustache as the logo.	
  
+Berico Technologies was purchased by Novetta in November 2018, and CLAVIN is being re-released with updated namespaces, and branding!
+ 
 ### License
 
-Copyright (C) 2012-2014 Berico Technologies
+Copyright (C) 2012-2020 Novetta
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 

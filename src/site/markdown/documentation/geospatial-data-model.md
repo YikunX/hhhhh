@@ -6,7 +6,7 @@ CLAVIN, at its core, is a tool for deriving geospatial information from text dat
 
 CLAVIN\'s worldwide view of geospatial "ground truth" is represented by the gazetteer model. It contains a massive collection of **named locations** -- the cities, countries, mountains, rivers, airports, etc. that you are most likely using CLAVIN to find. It also contains a semantic model for describing these geospatial entities. CLAVIN's gazetteer model is primarily based on the [GeoNames.org](http://geonames.org) geographical database.
 
-The gazetteer model located in the `com.bericotech.clavin.gazetteer` package contains these elements:
+The gazetteer model located in the `com.novetta.clavin.gazetteer` package contains these elements:
 
 -  `CountryCode` - a enumeration of all countries in the world
 
@@ -24,7 +24,7 @@ CLAVIN\'s extraction model deals with unresolved occurrences of resolvable geosp
 int endOffset = locationOccurrence.position + locationOccurrence.text.length();
 ```
 
-The extraction model located in the `com.bericotech.clavin.extractor` package contains this element:
+The extraction model located in the `com.novetta.clavin.extractor` package contains this element:
 
 -  `LocationOccurrence` - a named location found in the text (e.g., `Boston`, `Armenia`, `River Thames`)
 
@@ -32,7 +32,7 @@ The extraction model located in the `com.bericotech.clavin.extractor` package co
 
 Once locations have been extracted from the text, you\'ll want to resolve those locations to geospatial entities (represented by the `GeoName` class). The resolution model is how you interact with these entities once the resolution process is finished.
 
-The resolution model located in the `com.bericotech.clavin.resolver` package contains this element:
+The resolution model located in the `com.novetta.clavin.resolver` package contains this element:
 
 -  `ResolvedLocation` - a `LocationOccurrence` paired with a `GeoName`
 
