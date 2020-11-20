@@ -1,59 +1,135 @@
-CLAVIN
-======
+![CLAVIN](https://github.com/Novetta/CLAVIN/blob/develop/img/clavinLogo.png?raw=true)
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 
 CLAVIN (*Cartographic Location And Vicinity INdexer*) is an open source software package for document geotagging and geoparsing that employs context-based geographic entity resolution. It combines a variety of open source tools with natural language processing techniques to extract location names from unstructured text documents and resolve them against gazetteer records. Importantly, CLAVIN does not simply "look up" location names; rather, it uses intelligent heuristics-based combinatorial optimization in an attempt to identify precisely which "Springfield" (for example) was intended by the author, based on the context of the document. CLAVIN also employs fuzzy search to handle incorrectly-spelled location names, and it recognizes alternative names (e.g., "Ivory Coast" and "Côte d'Ivoire") as referring to the same geographic entity. By enriching text documents with structured geo data, CLAVIN enables hierarchical geospatial search and advanced geospatial analytics on unstructured data.
 
+CLAVIN natively uses Apache OpenNLP for extracting placenames in text as part of this library. CLAVIN now also integrates with Novetta's own [AdaptNLP](https://github.com/Novetta/adaptnlp) project for placename extraction. To use AdaptNLP, you'll need to follow the instructions on that repo to bring up an instance of the extractor. Lastly, wee also maintain the [clavin-nerd](https://github.com/novetta/clavin-nerd) project (which will be updated in the near future), that enables CLAVIN to use Stanford NER.
 
-How to build & use CLAVIN:
---------------------------
+## Breaking changes
+
+This release includes breaking changes in the form of an update to all namespaces.  The namespaces have been changed from com.bericotech to com.novetta which reflects a change in corporate ownership, and re-alignment to our new domain.   
+
+## How to build & use CLAVIN:
 
 1. Check out a copy of the source code:
-	> `git clone https://github.com/Berico-Technologies/CLAVIN.git`
+
+```
+git clone https://github.com/Novetta/CLAVIN.git
+```
 
 2. Move into the newly-created CLAVIN directory:
-	> `cd CLAVIN`
+
+```	
+cd CLAVIN
+```
 
 3. Download the latest version of allCountries.zip gazetteer file from GeoNames.org:
-	> `curl -O http://download.geonames.org/export/dump/allCountries.zip`
+
+```
+curl -O http://download.geonames.org/export/dump/allCountries.zip
+```
 
 4. Unzip the GeoNames gazetteer file:
-	> `unzip allCountries.zip`
+
+```
+unzip allCountries.zip
+```
 
 5. Compile the source code:
-	> `mvn compile`
+
+```
+mvn compile
+```
 
 6. Create the Lucene Index (this one-time process will take several minutes):
-	> `MAVEN_OPTS="-Xmx4g" mvn exec:java -Dexec.mainClass="com.bericotech.clavin.index.IndexDirectoryBuilder"`
+
+```
+MAVEN_OPTS="-Xmx4g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.index.IndexDirectoryBuilder"
+```
 
 7. Run the example program:
-	> `MAVEN_OPTS="-Xmx2g" mvn exec:java -Dexec.mainClass="com.bericotech.clavin.WorkflowDemo"`
+
+```
+MAVEN_OPTS="-Xmx2g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.WorkflowDemo"
+```
 	
-	If you encounter an error that looks like this:
-	> `... InvocationTargetException: Java heap space ...`
+If you encounter an error that looks like this:
+
+```
+... InvocationTargetException: Java heap space ...
+```
 	
-	set the appropriate environmental variable controlling Maven's memory usage, and increase the size with `export MAVEN_OPTS=-Xmx4g` or similar.
+Set the appropriate environmental variable controlling Maven's memory usage, and increase the size with `export MAVEN_OPTS=-Xmx4g` or similar.
 
 Once that all runs successfully, feel free to modify the CLAVIN source code to suit your needs.
 
 **N.B.**: Loading the worldwide gazetteer uses a non-trivial amount of memory. When using CLAVIN in your own programs, if you encounter `Java heap space` errors (like the one described in Step 7), bump up the maximum heap size for your JVM.
 
-* Add a dependency on the CLAVIN project:
+## Add CLAVIN to your project:
+
+CLAVIN is published to Maven Central. You can add a dependency on the CLAVIN project:
 
 ```xml
 <dependency>
-   <groupId>com.bericotech</groupId>
+   <groupId>com.novetta</groupId>
    <artifactId>clavin</artifactId>
-   <version>2.0.0</version>
+   <version>3.0.0</version>
 </dependency>
 ```
 
->  You will still need to build the GeoNames Lucene Index as described in steps 3, 4, and 6 in "How to build & use CLAVIN".
+You will still need to build the GeoNames Lucene Index as described in steps 3, 4, and 6 in "How to build & use CLAVIN".
 
-License:
---------
 
-Copyright (C) 2012-2016 Berico Technologies
+## Choosing an Extractor
+
+When using this library, you're now able to choose between two different extractors: Novetta AdaptNLP and Apache OpenNLP. For AdaptNLP
+
+**AdaptNLP**
+
+Creating an AdaptNlpExtractor: 
+
+```
+LocationExtractor extractor = new AdaptNlpExtractor();
+```
+
+**OpenNLP**
+
+Creating an ApacheExtractor: 
+
+```
+LocationExtractor extractor = new ApacheExtractor();
+```
+
+There are also some convenience methods in the GeoParserFactory for Apache OpenNLP. 
+
+So, for example, to set up the Gazetteer, AdaptNLP Extractor and GeoParser classes from scratch, it looks like this with default settings:   
+
+```
+// the maximum hit depth for CLAVIN searches
+private int maxHitDepth = 3;
+
+// the maximum context window for CLAVIN searches
+private int maxContextWindow = 5;
+
+// switch controlling use of fuzzy matching
+private boolean fuzzy = false;
+
+// adaptnlp host, port
+private string host = "http://localhost";
+private int port = 5000;
+
+Gazetteer gazetteer = new LuceneGazetteer(new File(pathToLuceneIndex));
+LocationExtractor extractor = new AdaptNlpExtractor(host, port);
+Geoparser parser = new GeoParser(extractor, gazetteer, maxHitDepth, maxContentWindow, fuzzy);
+
+```
+
+
+## License:
+
+Copyright (C) 2012-2020 Novetta
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

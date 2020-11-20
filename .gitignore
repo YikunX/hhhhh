@@ -1,6 +1,7 @@
 target/**
 indexDirectory*/**
 IndexDirectory*/
+adaptNLP/**
 .settings/
 .classpath
 .project
@@ -18,3 +19,5 @@ StanfordExtractor.java
 hierarchy.txt
 alternateNames.txt
 iso-languagecodes.txt
+
+/pom.xml.versionsBackup
