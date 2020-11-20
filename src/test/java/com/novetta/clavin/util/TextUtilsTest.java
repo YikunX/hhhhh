@@ -49,8 +49,7 @@ public class TextUtilsTest {
      */
     @Test
     public void testFileToString() throws IOException {
-        // TODO: fix this test so it works with Windows newline chars
-        
+
     	File inputFile = new File("src/test/resources/sample-docs/SampleText.txt");
     	String fileString = TextUtils.fileToString(inputFile);
     	fileString = fileString.replaceAll("\\n|\\r\\n|\\n\\r|\\r", System.lineSeparator());
@@ -62,3 +61,5 @@ public class TextUtilsTest {
     }
 
 }
+
+
