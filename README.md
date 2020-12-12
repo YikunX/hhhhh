@@ -76,7 +76,7 @@ CLAVIN is published to Maven Central. You can add a dependency on the CLAVIN pro
 ```xml
 <dependency>
    <groupId>com.novetta</groupId>
-   <artifactId>clavin</artifactId>
+   <artifactId>CLAVIN</artifactId>
    <version>3.0.0</version>
 </dependency>
 ```
