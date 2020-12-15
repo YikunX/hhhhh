@@ -9,6 +9,8 @@ CLAVIN (*Cartographic Location And Vicinity INdexer*) is an open source software
 
 CLAVIN natively uses Apache OpenNLP for extracting place names in text as part of this library. CLAVIN now also integrates with Novetta's own [AdaptNLP](https://github.com/Novetta/adaptnlp) project for place name extraction. To use AdaptNLP, you'll need to follow the instructions on that repo to bring up an instance of the extractor. Lastly, we also maintain the [clavin-nerd](https://github.com/novetta/clavin-nerd) project (which will be updated in the near future), that enables CLAVIN to use Stanford NER.
 
+Novetta also maintains the [CLAVIN-Rest](https://github.com/novetta/clavin-rest) project, which provides a RESTful microservice wrapper around CLAVIN or CLAVIN-NERD.  CLAVIN-Rest is configured (and provides instructions) to easily build and run this package as a docker image. 
+
 ## Breaking changes
 
 This release includes breaking changes in the form of an update to all namespaces.  The namespaces have been changed from com.bericotech to com.novetta which reflects a change in corporate ownership, and re-alignment to our new domain.   
