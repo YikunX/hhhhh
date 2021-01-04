@@ -78,7 +78,7 @@ public class LuceneGazetteerTest {
     public static List<LocationOccurrence> makeOccurrencesFromNames(String[] locationNames) {
         List<LocationOccurrence> locations = new ArrayList<LocationOccurrence>(locationNames.length);
         for (int i = 0; i < locationNames.length; ++i) {
-            locations.add(new LocationOccurrence(locationNames[i], i));
+            locations.add(new LocationOccurrence(locationNames[i], i, i));
         }
         return locations;
     }
@@ -241,7 +241,7 @@ public class LuceneGazetteerTest {
     @Test
     public void testBorderCases() throws ClavinException {
         // ensure we get no matches for this crazy String
-        LocationOccurrence loc = new LocationOccurrence("jhadghaoidhg", 0);
+        LocationOccurrence loc = new LocationOccurrence("jhadghaoidhg", 0, 0);
         queryBuilder.location(loc);
         assertTrue("Gazetteer fuzzy off, no match", instance.getClosestLocations(queryBuilder.fuzzyMode(FuzzyMode.OFF).build()).isEmpty());
         assertTrue("Gazetteer fuzzy on, no match", instance.getClosestLocations(queryBuilder.fuzzyMode(FuzzyMode.NO_EXACT).build()).isEmpty());
@@ -294,7 +294,7 @@ public class LuceneGazetteerTest {
      */
     @Test
     public void testFindHistoricalLocations() throws ClavinException {
-        LocationOccurrence sovietUnion = new LocationOccurrence("Soviet Union", 0);
+        LocationOccurrence sovietUnion = new LocationOccurrence("Soviet Union", 0, 0);
         queryBuilder.location(sovietUnion).maxResults(10).fuzzyMode(FuzzyMode.NO_EXACT);
         List<ResolvedLocation> withHistorical = instance.getClosestLocations(queryBuilder.includeHistorical(true).build());
         List<ResolvedLocation> activeOnly = instance.getClosestLocations(queryBuilder.includeHistorical(false).build());

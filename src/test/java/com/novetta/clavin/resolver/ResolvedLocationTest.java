@@ -1,7 +1,7 @@
 package com.novetta.clavin.resolver;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 
@@ -60,7 +60,7 @@ public class ResolvedLocationTest {
         GeoName geoname2 = BasicGeoName.parseFromGeoNamesRecord(geonamesEntry2);
 
         // a bogus LocationOccurrence object for testing
-        LocationOccurrence locationA = new LocationOccurrence("A", 0);
+        LocationOccurrence locationA = new LocationOccurrence("A", 0, 0);
 
         // two ResolvedLocation objects created from same Lucene Doc, etc.
         ResolvedLocation resolvedLocation = new ResolvedLocation(locationA, geoname, "Nowhere", false);
@@ -69,11 +69,11 @@ public class ResolvedLocationTest {
         // an identical ResolvedLocation object created from the second Lucene doc
         ResolvedLocation resolvedLocation2 = new ResolvedLocation(locationA, geoname2, "Nowhere", false);
 
-        assertTrue("ResolvedLocation == self", resolvedLocation.equals(resolvedLocation));
-        assertFalse("ResolvedLocation =! null", resolvedLocation.equals(null));
-        assertFalse("ResolvedLocation =! different class", resolvedLocation.equals(Integer.valueOf(0)));
-        assertTrue("ResolvedLocation == dupe", resolvedLocation.equals(resolvedLocationDupe));
-        assertFalse("ResolvedLocation != different geonameID", resolvedLocation.equals(resolvedLocation2));
+        assertEquals("ResolvedLocation == self", resolvedLocation, resolvedLocation);
+        assertNotEquals("ResolvedLocation =! null", resolvedLocation, null);
+        assertNotEquals("ResolvedLocation =! different class", resolvedLocation, Integer.valueOf(0));
+        assertEquals("ResolvedLocation == dupe", resolvedLocation, resolvedLocationDupe);
+        assertNotEquals("ResolvedLocation != different geonameID", resolvedLocation, resolvedLocation2);
     }
 
 }

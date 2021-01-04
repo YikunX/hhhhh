@@ -100,7 +100,7 @@ public class AdaptNlpExtractor implements LocationExtractor {
 						
 						// GPE = geo-political entity; i.e. a city/state/country, etc. 
 						if (entity.getType().equals("GPE")) {
-							locations.add(new LocationOccurrence(entity.getText(), entity.getStartPos()));
+							locations.add(new LocationOccurrence(entity.getText(), entity.getStartPos(), entity.getEndPos()));
 						}
 					}
 				}

@@ -152,7 +152,7 @@ public class QueryBuilder {
      * @return this
      */
     public QueryBuilder location(final String locName) {
-        location = new LocationOccurrence(locName, 0);
+        location = new LocationOccurrence(locName, 0, 0);
         return this;
     }
 
