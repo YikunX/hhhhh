@@ -41,7 +41,8 @@ public class LocationOccurrence {
 
     // number of UTF-16 code units from the start of the document at
     // which the location name starts
-    private final int position;
+    private final int startOffset;
+    private final int endOffset;
 
     /**
      * Sole construction for {@link LocationOccurrence} class.
@@ -51,9 +52,10 @@ public class LocationOccurrence {
      * @param text      text of the location name
      * @param position  where it was found
      */
-    public LocationOccurrence(String text, int position) {
+    public LocationOccurrence(String text, int startOffset, int endOffset) {
         this.text = text;
-        this.position = position;
+        this.startOffset = startOffset;
+        this.endOffset = endOffset;
     }
 
     /**
@@ -69,40 +71,52 @@ public class LocationOccurrence {
      * @return the number of UTF-16 code units from the start of the
      * document at which the location name starts
      */
-    public int getPosition() {
-        return position;
+    public int getStartOffset() {
+        return startOffset;
     }
-
+    
     /**
-     * Tests equivalence based on name and position.
-     *
-     * @param o     Object to compare this against
+     * Get the position in the text where the location name ends.
+     * @return the number of UTF-16 code units from the start of the
+     * document at which the location name starts
      */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        LocationOccurrence that = (LocationOccurrence) o;
-
-        if (position != that.position) return false;
-        if (text != null ? !text.equals(that.text) : that.text != null) return false;
-
-        return true;
+    public int getEndOffset() {
+        return endOffset;
     }
+    
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LocationOccurrence other = (LocationOccurrence) obj;
+		if (endOffset != other.endOffset)
+			return false;
+		if (startOffset != other.startOffset)
+			return false;
+		if (text == null) {
+			if (other.text != null)
+				return false;
+		} else if (!text.equals(other.text))
+			return false;
+		return true;
+	}
 
-    /**
-     * Required for hashing.
-     */
     @Override
-    public int hashCode() {
-        int result = text != null ? text.hashCode() : 0;
-        result = 31 * result + position;
-        return result;
-    }
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + endOffset;
+		result = prime * result + startOffset;
+		result = prime * result + ((text == null) ? 0 : text.hashCode());
+		return result;
+	}
 
     @Override
     public String toString() {
-        return String.format("\"%s\":%d", text, position);
+        return String.format("\"%s\":(%d, %d)", text, startOffset, endOffset);
     }
 }

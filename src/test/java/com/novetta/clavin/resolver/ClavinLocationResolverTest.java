@@ -76,7 +76,7 @@ public class ClavinLocationResolverTest {
     public static List<LocationOccurrence> makeOccurrencesFromNames(String[] locationNames) {
         List<LocationOccurrence> locations = new ArrayList<LocationOccurrence>(locationNames.length);
         for(int i = 0; i < locationNames.length; ++i ) {
-            locations.add(new LocationOccurrence(locationNames[i], i));
+            locations.add(new LocationOccurrence(locationNames[i], i, i));
         }
         return locations;
     }

@@ -125,7 +125,7 @@ public class ApacheExtractor implements LocationExtractor {
                 String nameInDocument = plainText.substring(startOffsetInDoc, endOffsetInDoc);
 
                 // add to List of results to return
-                nerResults.add(new LocationOccurrence(nameInDocument, startOffsetInDoc));
+                nerResults.add(new LocationOccurrence(nameInDocument, startOffsetInDoc, endOffsetInDoc));
             }
 
         }

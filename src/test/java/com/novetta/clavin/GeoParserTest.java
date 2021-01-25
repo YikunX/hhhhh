@@ -71,9 +71,16 @@ public class GeoParserTest {
         assertEquals("Incorrect ResolvedLocation", UNITED_STATES, resolvedLocations.get(0).getGeoname().getGeonameID());
         assertEquals("Incorrect ResolvedLocation", VERMONT, resolvedLocations.get(1).getGeoname().getGeonameID());
         assertEquals("Incorrect ResolvedLocation", MASSACHUSETTS, resolvedLocations.get(2).getGeoname().getGeonameID());
-        assertEquals("Incorrect position of LocationOccurance", inputText.indexOf("United States"), resolvedLocations.get(0).getLocation().getPosition());
-        assertEquals("Incorrect position of LocationOccurance", inputText.indexOf("Vermont"), resolvedLocations.get(1).getLocation().getPosition());
-        assertEquals("Incorrect position of LocationOccurance", inputText.indexOf("Massachusetts"), resolvedLocations.get(2).getLocation().getPosition());
+        testLocationOccurancePosition(inputText, "United States", resolvedLocations.get(0));
+        testLocationOccurancePosition(inputText, "Vermont", resolvedLocations.get(1));
+        testLocationOccurancePosition(inputText, "Massachusetts", resolvedLocations.get(2));
+    }
+    
+    private void testLocationOccurancePosition(String inputText, String locationString, ResolvedLocation resolvedLocation) {
+    	int startIndex = inputText.indexOf(locationString);
+    	int endIndex = startIndex + locationString.length();
+    	assertEquals("Incorrect start position of LocationOccurance", startIndex, resolvedLocation.getLocation().getStartOffset());
+    	assertEquals("Incorrect end position of LocationOccurance", endIndex, resolvedLocation.getLocation().getEndOffset());
     }
 
 }
