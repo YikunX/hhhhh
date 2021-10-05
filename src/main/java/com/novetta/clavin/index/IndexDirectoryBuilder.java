@@ -668,7 +668,7 @@ public class IndexDirectoryBuilder {
             	    + preferredName + ", shortName=" + shortName + "]";
             }
 
-		@Override
+        @Override
         public int compareTo(final AlternateName other) {
             int comp = geonameId - other.geonameId;
             comp = comp == 0 ? Boolean.compare(preferredName, other.preferredName) : comp;
