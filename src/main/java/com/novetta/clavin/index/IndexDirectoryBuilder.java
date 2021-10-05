@@ -112,7 +112,7 @@ public class IndexDirectoryBuilder {
     private IndexWriter indexWriter;
     private int indexCount;
 
-    private IndexDirectoryBuilder(final boolean fullAncestryIn) {
+    protected IndexDirectoryBuilder(final boolean fullAncestryIn) {
         adminMap = new TreeMap<>();
         unresolvedMap = new TreeMap<>();
         alternateNameMap = new HashMap<>();
@@ -637,7 +637,7 @@ public class IndexDirectoryBuilder {
         formatter.printHelp("run", options, true);
     }
 
-    private static class AlternateName implements Comparable<AlternateName> {
+    protected static class AlternateName implements Comparable<AlternateName> {
         private final int geonameId;
         private final String name;
         private final String lang;
@@ -663,6 +663,12 @@ public class IndexDirectoryBuilder {
         }
 
         @Override
+		public String toString() {
+			return "AlternateName [geonameId=" + geonameId + ", name=" + name + ", lang=" + lang + ", preferredName="
+					+ preferredName + ", shortName=" + shortName + "]";
+		}
+
+		@Override
         public int compareTo(final AlternateName other) {
             int comp = geonameId - other.geonameId;
             comp = comp == 0 ? Boolean.compare(preferredName, other.preferredName) : comp;
@@ -729,7 +735,7 @@ public class IndexDirectoryBuilder {
             // if one name is preferred and the other is not, use the preferred name
             int comp = Boolean.compare(preferredName, other.preferredName);
             // if preferred is the same, use a short name over a non-short name
-            comp = comp != 0 ? Boolean.compare(shortName, other.shortName) : comp;
+            comp = comp == 0 ? Boolean.compare(shortName, other.shortName) : comp;
             // if all things are still equal, use this
             return comp >= 0 ? this : other;
         }
