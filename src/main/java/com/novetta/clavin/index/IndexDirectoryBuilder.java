@@ -663,10 +663,10 @@ public class IndexDirectoryBuilder {
         }
 
         @Override
-		public String toString() {
-			return "AlternateName [geonameId=" + geonameId + ", name=" + name + ", lang=" + lang + ", preferredName="
-					+ preferredName + ", shortName=" + shortName + "]";
-		}
+        public String toString() {
+            return "AlternateName [geonameId=" + geonameId + ", name=" + name + ", lang=" + lang + ", preferredName="
+            	    + preferredName + ", shortName=" + shortName + "]";
+            }
 
 		@Override
         public int compareTo(final AlternateName other) {
