@@ -19,5 +19,7 @@ StanfordExtractor.java
 hierarchy.txt
 alternateNames.txt
 iso-languagecodes.txt
+utils/venv/**
+utils/FeatureCode.java
 
 /pom.xml.versionsBackup
