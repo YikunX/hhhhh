@@ -53,6 +53,8 @@ mvn compile
 MAVEN_OPTS="-Xmx4g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.index.IndexDirectoryBuilder"
 ```
 
+6b. If the previous step failed with an error about the FeatureCode enum type, GeoNames may have a newer version of their feature codes file. You can update your local CLAVIN project to be compatible with the latest version by running `utils/featureCodeEnumeration.py` and copy/pasting the resulting file to replace FeatureCode.java located in /src/main/java/com/novetta/clavin/gazetteer/FeatureCode.java
+
 7. Run the example program:
 
 ```
