@@ -74,9 +74,9 @@ with open('FeatureCode.java', 'w') as outfile:
 		 * Constructor for {@link FeatureCode} enum type.
 		 *
 		 * @param featureClass class this code belongs to
-		 * @param type			name of code
-		 * @param description	description of code
-		 * @param historical	is this feature class a historical location
+		 * @param type          name of code
+		 * @param description   description of code
+		 * @param historical    is this feature class a historical location
 		 */
 		private FeatureCode(FeatureClass featureClass, String type, String description, boolean historical) {
 			this.featureClass = featureClass;
