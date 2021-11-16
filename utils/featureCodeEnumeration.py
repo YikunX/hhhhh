@@ -50,7 +50,7 @@ with open('FeatureCode.java', 'w') as outfile:
 			if row and not row.startswith("null"):
 				print(f"failed to parse row: {row}")
 		else:
-			outfile.write(f'\t{codeKey}(FeatureClass.{codeClass}, "{longName}", "{description}", {isHistorical}),\n')
+			outfile.write(f'    {codeKey}(FeatureClass.{codeClass}, "{longName}", "{description}", {isHistorical}),\n')
 	outfile.write('''
 		// manually added to identify territories that can contain other administrative divisions
 		TERRI(FeatureClass.A, "independent territory", "a territory that acts as an independent political entity", false),
@@ -99,5 +99,5 @@ with open('FeatureCode.java', 'w') as outfile:
 	
 		public boolean isHistorical() {
 			return historical;
-		}'''.replace('\n\t', '\n'))
+		}'''.replace('\n\t', '\n').replace('\t', '    '))
 	outfile.write('\n}\n')
