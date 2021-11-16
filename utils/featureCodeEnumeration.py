@@ -52,12 +52,12 @@ with open('FeatureCode.java', 'w') as outfile:
 		else:
 			outfile.write(f'\t{codeKey}(FeatureClass.{codeClass}, "{longName}", "{description}", {isHistorical}),\n')
 	outfile.write('''
+		// manually added to identify territories that can contain other administrative divisions
+		TERRI(FeatureClass.A, "independent territory", "a territory that acts as an independent political entity", false),
+		
 		// manually added for locations not assigned to a feature code
 		NULL(FeatureClass.NULL, "not available", "", false);
 		
-		// manually added to identify territories that can contain other administrative divisions
-		TERRI(FeatureClass.A, "independent territory", "a territory that acts as an independent political entity", false),
-	
 		// the feature class this feature code belongs to
 		private final FeatureClass featureClass;
 	
@@ -74,7 +74,7 @@ with open('FeatureCode.java', 'w') as outfile:
 		 * Constructor for {@link FeatureCode} enum type.
 		 *
 		 * @param featureClass class this code belongs to
-		 * @param type					name of code
+		 * @param type			name of code
 		 * @param description	description of code
 		 * @param historical	is this feature class a historical location
 		 */
@@ -99,5 +99,5 @@ with open('FeatureCode.java', 'w') as outfile:
 	
 		public boolean isHistorical() {
 			return historical;
-		}'''.replace('\t\t', '\t'))
+		}'''.replace('\n\t', '\n'))
 	outfile.write('\n}\n')

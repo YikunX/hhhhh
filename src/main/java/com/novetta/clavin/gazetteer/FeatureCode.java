@@ -714,21 +714,24 @@ public enum FeatureCode {
 	VIN(FeatureClass.V, "vineyard", "a planting of grapevines", false),
 	VINS(FeatureClass.V, "vineyards", "plantings of grapevines", false),
 
+	// manually added to identify territories that can contain other administrative divisions
+	TERRI(FeatureClass.A, "independent territory", "a territory that acts as an independent political entity", false),
+	
 	// manually added for locations not assigned to a feature code
 	NULL(FeatureClass.NULL, "not available", "", false);
 	
 	// the feature class this feature code belongs to
 	private final FeatureClass featureClass;
-	
+
 	// name of feature code
 	private final String type;
-	
+
 	// description of feature code
 	private final String description;
-	
+
 	// does this feature code represent a historical location
 	private final boolean historical;
-	
+
 	/**
 	 * Constructor for {@link FeatureCode} enum type.
 	 *
@@ -743,19 +746,19 @@ public enum FeatureCode {
 		this.description = description;
 		this.historical = historical;
 	}
-	
+
 	public FeatureClass getFeatureClass() {
 		return featureClass;
 	}
-	
+
 	public String getType() {
 		return type;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public boolean isHistorical() {
 		return historical;
 	}
