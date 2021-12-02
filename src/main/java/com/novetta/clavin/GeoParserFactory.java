@@ -1,9 +1,11 @@
 package com.novetta.clavin;
 
+import com.novetta.clavin.extractor.AdaptNlpExtractor;
 import com.novetta.clavin.extractor.ApacheExtractor;
 import com.novetta.clavin.extractor.LocationExtractor;
 import com.novetta.clavin.gazetteer.query.Gazetteer;
 import com.novetta.clavin.gazetteer.query.LuceneGazetteer;
+import com.novetta.clavin.util.StaticProperties;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,7 +54,7 @@ public class GeoParserFactory {
      * @throws ClavinException      If the index cannot be created.
      */
     public static GeoParser getDefault(String pathToLuceneIndex) throws ClavinException {
-        return getDefault(pathToLuceneIndex, 1, 1, false);
+        return getDefault(pathToLuceneIndex, StaticProperties.get("defaultFuzzy").equals("true"));
     }
 
     /**
@@ -64,7 +66,9 @@ public class GeoParserFactory {
      * @throws ClavinException      If the index cannot be created.
      */
     public static GeoParser getDefault(String pathToLuceneIndex, boolean fuzzy) throws ClavinException {
-        return getDefault(pathToLuceneIndex, 1, 1, fuzzy);
+    	int maxHitDepth = Integer.parseInt(StaticProperties.get("defaultMaxHitDepth"));
+    	int maxContentWindow = Integer.parseInt(StaticProperties.get("defaultMaxContentWindow"));
+        return getDefault(pathToLuceneIndex, maxHitDepth, maxContentWindow, fuzzy);
     }
 
     /**
@@ -96,7 +100,15 @@ public class GeoParserFactory {
                     throws ClavinException {
         try {
             // instantiate default LocationExtractor
-            LocationExtractor extractor = new ApacheExtractor();
+        	String defaultExtractorType = StaticProperties.get("defaultExtractorType");
+        	LocationExtractor extractor;
+        	if (defaultExtractorType.equals("apache")) {
+        		extractor = new ApacheExtractor();
+        	} else if (defaultExtractorType.equals("adapt")) {
+        		extractor = new AdaptNlpExtractor();
+        	} else {
+        		throw new ClavinException("Expected defaultExtractorType to be one of {'apache', 'adapt'}; instead found" + defaultExtractorType);
+        	}
             return getDefault(pathToLuceneIndex, extractor, maxHitDepth, maxContentWindow, fuzzy);
         } catch (IOException ioe) {
             throw new ClavinException("Error creating ApacheExtractor", ioe);
