@@ -24,4 +24,4 @@ phases:
       - unzip allCountries.zip 
       - mvn -B compile 
       - MAVEN_OPTS="-Xmx4g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.index.IndexDirectoryBuilder"       
-      - mvn -s settings.xml clean package deploy
+      - mvn -s .release/settings.xml clean package deploy
