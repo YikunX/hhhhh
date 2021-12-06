@@ -18,4 +18,9 @@ phases:
     commands:
       - export UNAME=$CLAVIN_MAVEN_CENTRAL_USERNAME
       - export PWORD=$CLAVIN_MAVEN_CENTRAL_PASSWORD
-      - mvn -s .release/settings.xml clean package deploy
+      - cd ../
+      - curl -O http://download.geonames.org/export/dump/allCountries.zip 
+      - unzip allCountries.zip 
+      - mvn -B compile 
+      - MAVEN_OPTS="-Xmx4g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.index.IndexDirectoryBuilder"       
+      - mvn -s settings.xml clean package deploy
