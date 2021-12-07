@@ -26,4 +26,4 @@ phases:
       - export PASSPHRASE=$CLAVIN_GPG_PASSPHRASE 
       - echo $CLAVIN_GPG_OWNERTRUST | base64 --decode | gpg --import-ownertrust
       - echo $CLAVIN_GPG_SECRET_KEYS | base64 --decode | gpg --import --no-tty --batch --yes  
-      - mvn -s .release/settings.xml clean package deploy -Dmaven.test.skip=true
+      - mvn -s .release/settings.xml clean package deploy -B -Dmaven.test.skip=true -Prelease
