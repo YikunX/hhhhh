@@ -26,8 +26,4 @@ phases:
       - export PASSPHRASE=$CLAVIN_GPG_PASSPHRASE 
       - echo $CLAVIN_GPG_OWNERTRUST | base64 --decode | gpg --import-ownertrust
       - echo $CLAVIN_GPG_SECRET_KEYS | base64 --decode | gpg --import --no-tty --batch --yes  
-      - curl -O http://download.geonames.org/export/dump/allCountries.zip 
-      - unzip allCountries.zip 
-      - mvn -B compile 
-      - MAVEN_OPTS="-Xmx4g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.index.IndexDirectoryBuilder"       
-      - mvn -s .release/settings.xml clean package deploy
+      - mvn -s .release/settings.xml clean package deploy -Dmaven.test.skip=true
