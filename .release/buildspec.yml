@@ -19,7 +19,7 @@ phases:
       - export UNAME=$CLAVIN_MAVEN_CENTRAL_USERNAME
       - export PWORD=$CLAVIN_MAVEN_CENTRAL_PASSWORD
       - pwd
-      - ls
+      - ls -al
       - curl -O http://download.geonames.org/export/dump/allCountries.zip 
       - unzip allCountries.zip 
       - mvn -B compile 
