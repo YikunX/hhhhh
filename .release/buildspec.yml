@@ -24,6 +24,7 @@ phases:
       - export PWORD=$CLAVIN_MAVEN_CENTRAL_PASSWORD
       - export KEYNAME=$CLAVIN_GPG_KEYNAME
       - export PASSPHRASE=$CLAVIN_GPG_PASSPHRASE 
+      - yum update -y
       - echo $CLAVIN_GPG_OWNERTRUST | base64 --decode | gpg --import-ownertrust
       - echo $CLAVIN_GPG_SECRET_KEYS | base64 --decode | gpg --import --no-tty --batch --yes  
       - mvn -s .release/settings.xml clean package deploy -B -Dmaven.test.skip=true -Prelease
