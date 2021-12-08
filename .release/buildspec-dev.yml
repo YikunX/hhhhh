@@ -1,0 +1,25 @@
+version: 0.2
+
+env:
+  secrets-manager:
+    CLAVIN_MAVEN_CENTRAL_USERNAME: "CLAVIN:MAVEN_CENTRAL_USERNAME"
+    CLAVIN_MAVEN_CENTRAL_PASSWORD: "CLAVIN:MAVEN_CENTRAL_PASSWORD"
+    
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+
+  pre_build:
+    commands:
+      - pip3 install awscli --upgrade --user
+
+  build:
+    commands:
+      - export UNAME=$CLAVIN_MAVEN_CENTRAL_USERNAME
+      - export PWORD=$CLAVIN_MAVEN_CENTRAL_PASSWORD
+      - curl -O http://download.geonames.org/export/dump/allCountries.zip 
+      - unzip allCountries.zip 
+      - mvn -B compile 
+      - MAVEN_OPTS="-Xmx4g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.index.IndexDirectoryBuilder"     
+      - mvn -B -s .release/settings.xml clean package deploy

@@ -24,8 +24,13 @@ phases:
       - export PWORD=$CLAVIN_MAVEN_CENTRAL_PASSWORD
       - export KEYNAME=$CLAVIN_GPG_KEYNAME
       - export PASSPHRASE=$CLAVIN_GPG_PASSPHRASE 
-      - gpg --version
       - echo $CLAVIN_GPG_OWNERTRUST | base64 --decode | gpg --import-ownertrust
       - echo $CLAVIN_GPG_SECRET_KEYS | base64 --decode | gpg --import --no-tty --batch --yes  
-      - gpg --keyserver hkp://keyserver.ubuntu.com --send-keys e95f31289a0d6d52
-      - mvn -s .release/settings.xml clean package deploy -B -Dmaven.test.skip=true -Prelease
+      # If you need to publish the public key to a keyserver, use the following command:
+      # - gpg --keyserver hkp://keyserver.ubuntu.com --send-keys e95f31289a0d6d52
+      - curl -O http://download.geonames.org/export/dump/allCountries.zip 
+      - unzip allCountries.zip 
+      - mvn -B compile 
+      - MAVEN_OPTS="-Xmx4g" mvn exec:java -Dexec.mainClass="com.novetta.clavin.index.IndexDirectoryBuilder"     
+      - mvn -B -s .release/settings.xml clean package deploy -Prelease
+      
